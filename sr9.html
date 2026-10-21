@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deccan Traps, K–Pg Boundary &amp; Himalayan Orogeny</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      main-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR9 • DECCAN TRAPS, K–PG BOUNDARY &amp; HIMALAYAN OROGENY</div>
+      <h1>Deccan Traps, K–Pg Boundary &amp; Himalayan Orogeny</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the areal extent, volume, and primary petrogenetic driver of the Deccan Traps flood basalt province?",
+        options: [
+          "An Archean greenstone belt covering 10,000 km² derived from partial melting of upper mantle peridotites",
+          "A colossal continental flood basalt province covering ~500,000 km² (originally >1.5 million km²), erupted rapidly at ~65–66 Ma, driven by the Réunion mantle plume head",
+          "A Neogene granitic batholith emplaced along the Main Boundary Thrust",
+          "A Triassic graben-filling sedimentary sequence with coal measures"
+        ],
+        correct: 1,
+        explanation: "The Deccan Traps represent one of Phanerozoic Earth's largest Large Igneous Provinces (LIPs), erupted predominantly during Chron 29r (~65.5 Ma) over a short geological duration of <1 million years due to the ascent of the Réunion mantle plume."
+      },
+      {
+        q: "How is the Deccan basalt pile in the Western Ghats formally subdivided from base to top into subgroups?",
+        options: [
+          "Kasulbai Subgroup → Lonavala Subgroup → Wai Subgroup (Devighat and Mahabaleshwar formations)",
+          "Semri Group → Kaimur Group → Rewa Group → Bhander Group",
+          "Uttatur → Trichinopoly → Ariyalur → Niniyur",
+          "Patcham → Chari → Katrol → Umia"
+        ],
+        correct: 0,
+        explanation: "In the Western Ghats type section, the Deccan basalt stratigraphy is divided into three major subgroups from bottom to top: Kasulbai Subgroup (oldest, lowest elevations), Lonavala Subgroup, and Wai Subgroup (comprising the Devighat and Mahabaleshwar formations, which form the topmost and most voluminous flows)."
+      },
+      {
+        q: "What is the significance of intertrappean beds intercalated between Deccan basalt flows?",
+        options: [
+          "They are marine evaporite beds containing rock salt and gypsum",
+          "They represent lacustrine, fluvial, and estuarine sedimentary horizons containing freshwater gastropods, ostracods, fish scales, frog remains, and plant fossils that record biotic recovery during volcanic quiescent phases",
+          "They are Permian glacial tillites",
+          "They are deep-sea abyssal radiolarian cherts"
+        ],
+        correct: 1,
+        explanation: "Intertrappean beds are thin sedimentary lenses deposited in lakes and river valleys during pauses in volcanic activity, preserving critical fossil evidence of flora and fauna living during the K–Pg transition."
+      },
+      {
+        q: "How are the Lameta Beds (Infratrappean) stratigraphically related to the Deccan Traps and the K–Pg boundary extinction event?",
+        options: [
+          "They overlie the Deccan Traps and contain Quaternary mammal fossils",
+          "They immediately underlie the lowest Deccan basalt flows (Maastrichtian), preserving dinosaur nesting sites and dinosaurian skeletal remains right before the catastrophic flood basalt volcanism",
+          "They represent Precambrian basement TTG gneisses",
+          "They are Paleozoic coal-bearing shales of the Damodar valley"
+        ],
+        correct: 1,
+        explanation: "The Lameta Formation represents terrestrial and lacustrine deposits resting non-conformably on older basements directly beneath the earliest Deccan lava flows, marking the final terrestrial ecosystem of dinosaurs in India."
+      },
+      {
+        q: "What is the origin and age of the Rajmahal Traps in eastern India (~132 Ma)?",
+        options: [
+          "Eocene basalt flows contemporaneous with the Deccan Traps",
+          "Early Cretaceous tholeiitic flood basalts associated with the Kerguelen mantle plume activity during the initial breakup of East Gondwana (India-Antarctica separation)",
+          "Permian glacial diamictites of the Talchir Formation",
+          "Neoproterozoic alkaline ring complexes"
+        ],
+        correct: 1,
+        explanation: "The Rajmahal Traps (~132 Ma, Early Cretaceous) formed during the early rifting and separation of India from Antarctica and Australia, linked to the Kerguelen hotspot plume."
+      },
+      {
+        q: "What plate-tectonic event initiated the Himalayan Orogeny, and approximately when did initial continent-continent collision occur?",
+        options: [
+          "Collision of the Indian plate with the Kohistan-Ladakh island arc and subsequently with the Eurasian plate during the Early Eocene (~50–55 Ma)",
+          "Collision of the Deccan Craton with Antarctica in the Jurassic",
+          "Subduction of the Pacific plate beneath Assam in the Miocene",
+          "Opening of the Narmada rift in the Late Proterozoic"
+        ],
+        correct: 0,
+        explanation: "The northward drift of Greater India culminated in the closure of the Neo-Tethys Ocean and initial collision with Eurasia (via the Kohistan-Ladakh arc) at ~55–50 Ma (Early Eocene), triggering crustal thickening, regional metamorphism, and uplift of the Himalayas."
+      },
+      {
+        q: "What is the stratigraphic and structural position of the Subathu Formation in the Himalayan foothills (Shimla Hills)?",
+        options: [
+          "A Neogene fluvial conglomerate resting on top of the Siwalik Hills",
+          "An Eocene shallow-marine nummulitic limestone and shale sequence bounded between the Krol Thrust and the Main Boundary Thrust (MBT)",
+          "An Archean high-grade charnockite suite",
+          "A Permian coal-bearing Gondwana formation"
+        ],
+        correct: 1,
+        explanation: "The Subathu Formation represents the marine Paleogene (Eocene) nummulitic transgression across the Lesser Himalayan belt, pinched between major tectonic thrusts like the Krol Thrust and Main Boundary Thrust (MBT)."
+      },
+      {
+        q: "How are the Dagshai and Kasauli formations (Oligocene to Early Miocene) distinguished in the Lesser Himalayan Paleogene sequence?",
+        options: [
+          "Dagshai Formation consists of purple/red shales and sandstones (brackish to freshwater); Kasauli Formation consists of thick grey to greenish sandstones and grey shales representing freshwater/fluviatile environments",
+          "Both formations are marine Cretaceous chalks",
+          "Dagshai is an Eocene limestone; Kasauli is an Archean gneiss",
+          "Both formations are glacial tillites"
+        ],
+        correct: 0,
+        explanation: "Following the Subathu marine phase, the Himalayan foreland basin filled with continental molasse: the Dagshai Formation (Oligocene purple shales/sandstones) and the Kasauli Formation (Early Miocene grey sandstones and plant-bearing shales)."
+      },
+      {
+        q: "What is the Siwalik Group, and what is its overall tectonic and lithological character?",
+        options: [
+          "A 5,000 to 6,000-meter thick pile of Cenozoic marine evaporites and halite",
+          "A colossal thick pile (5,000–6,000 m) of Neogene to Pleistocene continental molasse sediments (sandstones, shales, conglomerates) shed southward from the rising Himalayan mountain belt into the Himalayan Foreland Basin",
+          "A Precambrian carbonate platform sequence of the Cuddapah Basin",
+          "A suite of Mesozoic flood basalts erupted along the Indus-Tsangpo suture"
+        ],
+        correct: 1,
+        explanation: "The Siwalik Group forms the outermost foothills of the Himalayas, representing a continuous molasse wedge eroded from the uplifting orogen and deposited in the subsiding Himalayan Foreland Basin from Middle Miocene to Pleistocene times."
+      },
+      {
+        q: "What is the classic tripartite subdivision of the Siwalik Group from base to top?",
+        options: [
+          "Lower Siwalik (Chinji and Kamlial formations) → Middle Siwalik (Nagri and Dhokpathan formations) → Upper Siwalik (Tatrot, Pinjor, and Boulder Conglomerate formations)",
+          "Semri → Kaimur → Rewa → Bhander",
+          "Uttatur → Trichinopoly → Ariyalur → Niniyur",
+          "Talchir → Barakar → Raniganj"
+        ],
+        correct: 0,
+        explanation: "The Siwalik Group is classically divided into Lower Siwalik (reddish clays and sandstones of Chinji and Kamlial), Middle Siwalik (massive grey sandstones of Nagri and Dhokpathan), and Upper Siwalik (coarse sandstones, silts, and boulder conglomerates of Tatrot, Pinjor, and Boulder Conglomerate)."
+      },
+      {
+        q: "Which mammalian fossil index marks the base of the Middle Siwalik (Nagri Formation), representing a major dispersal event across Eurasia?",
+        options: [
+          "Appearance of the three-toed horse *Hipparion* (and associated proboscideans like *Stegodon*)",
+          "Abundant Cambrian trilobites",
+          "Glossopteris flora fronds",
+          "Eocene nummulitic foraminifera"
+        ],
+        correct: 0,
+        explanation: "The *Hipparion* datum (approx. Middle Miocene / Tortonian boundary) marks the abrupt appearance of the immigrant three-toed horse *Hipparion* across the Middle Siwalik Nagri Formation."
+      },
+      {
+        q: "What characterizes the Upper Siwalik formations (Tatrot, Pinjor, and Boulder Conglomerate)?",
+        options: [
+          "Deep-marine black shales with ammonites",
+          "Coarse-grained fluvial sandstones, silts, and massive boulder conglomerates containing Plio-Pleistocene mammalian fossils such as *Equus* (true horse), *Elephas* (true elephant), and *Bos*",
+          "Precambrian stromatolitic dolostones",
+          "Lower Permian glacial tillites"
+        ],
+        correct: 1,
+        explanation: "The Upper Siwalik sequence reflects rapid tectonic uplift and coarse alluvial fan/braided river deposition, yielding advanced mammalian assemblages (*Equus*, *Elephas*, *Camelus*) spanning the Plio-Pleistocene boundary."
+      },
+      {
+        q: "What are the three major crustal-scale tectonic thrusts that bound the principal lithotectonic zones of the Himalayas from north to south?",
+        options: [
+          "Main Central Thrust (MCT), Main Boundary Thrust (MBT), and Himalayan Frontal Thrust (HFT)",
+          "Great Boundary Fault, Singhbhum Shear Zone, and Chitradurga Shear Zone",
+          "Son-Narmada North Fault, Son-Narmada South Fault, and Central Indian Suture",
+          "Moyar-Bhavani, Palghat-Cauvery, and Achankovil Shear Zones"
+        ],
+        correct: 0,
+        explanation: "The Himalayan orogenic wedge is sliced by major south-vergent crustal thrusts: the Main Central Thrust (MCT, separating Higher Himalayan Crystallines from Lesser Himalaya), the Main Boundary Thrust (MBT, separating Lesser Himalaya from Siwalik molasse), and the Himalayan Frontal Thrust (HFT, bounding Siwaliks against the Indo-Gangetic alluvium)."
+      },
+      {
+        q: "How does stable carbon isotope ($\delta^{13}\text{C}$) stratigraphy of palaeosols in the Siwalik molasse record environmental changes during the Late Miocene?",
+        options: [
+          "It records an abrupt shift from C3-dominant forests to C4-dominant grasslands (savannah expansion) around 8–7 Ma driven by intensified Asian monsoon circulation",
+          "It records the onset of Proterozoic 'Snowball Earth' glaciation",
+          "It shows continuous marine carbonate precipitation in deep ocean trenches",
+          "It proves the permanent absence of vegetation in the Himalayan foothills"
+        ],
+        correct: 0,
+        explanation: "Siwalik palaeosol carbon isotope records document a dramatic global ecosystem shift around 8 to 7 million years ago (Late Miocene), where forests dominated by C3 plants were replaced by C4 grasslands, linked to the strengthening of the South Asian summer monsoon."
+      },
+      {
+        q: "What is the structural and metamorphic nature of the Higher Himalayan Crystalline (HHC) slab exposed north of the Main Central Thrust (MCT)?",
+        options: [
+          "Unmetamorphosed Eocene limestone containing nummulites",
+          "A slab of high-grade metamorphic gneisses, migmatites, and leucogranites (sillimanite-kyanite-grade with garnet and cordierite) derived from the northward-subducted margin of Indian crust",
+          "Cretaceous basaltic flood flows of the Deccan Traps",
+          "Permian coal-bearing sandstone grabens"
+        ],
+        correct: 1,
+        explanation: "The Higher Himalayan Crystalline (HHC) sequence consists of amphibolite- to granulite-facies pelitic gneisses, calc-silicates, and Miocene tourmaline-bearing leucogranites, bounded below by the MCT and above by the South Tibetan Detachment System (STDS)."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

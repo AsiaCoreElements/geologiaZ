@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gondwana Supergroup &amp; Stratigraphy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR7 • GONDWANA SUPERGROUP &amp; STRATIGRAPHY</div>
+      <h1>Gondwana Supergroup &amp; Stratigraphy</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the structural and tectonic nature of the basins that host the Gondwana Supergroup in peninsular India?",
+        options: [
+          "Intracratonic half-grabens and fault-bounded linear rift troughs (such as the Son-Damodar, Mahanadi, and Pranhita-Godavari grabens) controlled by ancient pre-existing basement lineaments",
+          "Deep-marine subduction trenches formed along the Himalayan collision boundary",
+          "Undeformed circular cratonic syneclises resting on the Western Dharwar Craton",
+          "Cenozoic basaltic volcanic calderas"
+        ],
+        correct: 0,
+        explanation: "The Gondwana Supergroup sediments accumulated in linear, fault-bounded continental rift grabens and half-grabens (e.g., Son-Damodar, Mahanadi, and Pranhita-Godavari valleys) developed during Late Paleozoic continental rifting and breakup of the Gondwana supercontinent."
+      },
+      {
+        q: "How is the Gondwana Supergroup classically tripartite subdivided in Indian stratigraphy based on climatic and floral changes?",
+        options: [
+          "Lower Gondwana (Permian: Glacial to Coal-bearing warm temperate) → Middle Gondwana (Triassic: Arid red-beds) → Upper Gondwana (Jurassic-Cretaceous: Warm & humid, trap volcanism)",
+          "Semri Group → Kaimur Group → Bhander Group",
+          "Papaghni Group → Chitravati Group → Nallamalai Group",
+          "Talchir Formation → Barakar Formation → Raniganj Formation"
+        ],
+        correct: 0,
+        explanation: "The Gondwana Supergroup spans from Late Carboniferous/Early Permian to Cretaceous and is classically divided into Lower Gondwana (Talchir to Raniganj), Middle Gondwana (Panchet to Mahadeva/Maleri), and Upper Gondwana (Kota, Jabalpur, Rajmahal)."
+      },
+      {
+        q: "What is the depositional signature and paleoclimatic significance of the Talchir Formation at the base of the Lower Gondwana succession?",
+        options: [
+          "Thick bituminous coal seams and oil shales",
+          "Glaciogenic diamictites, tillites, needle shales, and boulder beds featuring striated and faceted dropstones, marking the Late Paleozoic Gondwana glaciation",
+          "Subaerial alkaline basaltic flows",
+          "Shallow marine oolitic limestone with ammonites"
+        ],
+        correct: 1,
+        explanation: "The Talchir Formation represents the onset of the Gondwana sedimentation, characterized by glacial tillites, boulder beds with striated pebbles, and greenish needle shales reflecting widespread continental glaciation across southern Gondwanaland."
+      },
+      {
+        q: "Which formation within the Lower Gondwana is recognized as the primary prime coking coal repository of India, and what megaflora dominates it?",
+        options: [
+          "Talchir Formation (*Gangamopteris*)",
+          "Barakar Formation (*Glossopteris* flora, thick multi-seam coal measures)",
+          "Barren Measures (devoid of coal and plant fossils)",
+          "Panchet Formation (*Dicroidium* flora)"
+        ],
+        correct: 1,
+        explanation: "The Barakar Formation (Early Permian) is India's most important coal-bearing unit, hosting extensive thick coal seams formed in swampy fluvio-lacustrine environments dominated by the seed-fern *Glossopteris* flora."
+      },
+      {
+        q: "What is the lithological character and economic importance (or lack thereof) of the Barren Measures Formation overlying the Barakar Formation?",
+        options: [
+          "Thick anthracite coal seams mined for steel production",
+          "Ironstone-bearing grey-to-greenish shales and sandstones completely devoid of workable coal seams",
+          "Pure white quartzites used for glass manufacture",
+          "Marine halite and gypsum evaporites"
+        ],
+        correct: 1,
+        explanation: "The Barren Measures (formerly Ironstone Shale Formation) consist of carbonaceous shales and sideritic ironstone bands positioned between the Barakar and Raniganj formations, notable for the virtual absence of coal seams."
+      },
+      {
+        q: "How does the Raniganj Formation (Upper Permian) differ from the Barakar Formation in terms of coal seam characteristics and depositional setting?",
+        options: [
+          "Raniganj coals are thinner, more numerous, high-moisture/non-coking coals formed in broader, more mature meandering river floodplains compared to the thick Barakar braid-plain coal seams",
+          "Raniganj formation is a marine limestone devoid of carbonaceous matter",
+          "Raniganj formation represents glacial tillites",
+          "Raniganj formation consists of Triassic red clays"
+        ],
+        correct: 0,
+        explanation: "The Raniganj Formation represents Late Permian meandering river floodplains and swamps, producing numerous thinner coal seams with higher moisture and volatile matter compared to the older Barakar coking coals."
+      },
+      {
+        q: "What characteristic fossil assemblage defines the Middle Gondwana Panchet and Mahadeva / Maleri formations?",
+        options: [
+          "Glossopteris flora and marine brachiopods",
+          "Dicroidium flora (seed ferns) along with labyrinthodont amphibians (*Labyrinthodon*) and Triassic dicynodont reptiles (*Hyperodapedon*, *Parasuchus*)",
+          "Nummulitic foraminifera and whale bones",
+          "Cretaceous dinosaurian eggshells"
+        ],
+        correct: 1,
+        explanation: "The Triassic Middle Gondwana beds transition from green/red shales (Panchet) to red-bed sandstones (Mahadeva/Maleri), characterized by the appearance of the fork-leaved *Dicroidium* flora and early archosaur/dicynodont tetrapod fossils."
+      },
+      {
+        q: "What is the stratigraphic and paleobotanical significance of the Upper Gondwana Rajmahal Traps and intertrappean beds?",
+        options: [
+          "They contain Late Permian glossopteris coal seams",
+          "They are basaltic flood flows (~132 Ma) interbedded with sedimentary intertrappean plant beds yielding classic Jurassic-Cretaceous cycads, conifers, and pentoxyleans (*Ptilophyllum*, *Otozamites*)",
+          "They are Eocene nummulitic limestones",
+          "They represent Precambrian stromatolitic dolostones"
+        ],
+        correct: 1,
+        explanation: "The Rajmahal Traps (Early Cretaceous, ~132 Ma) comprise tholeiitic basalt flows interlayered with fossil-rich intertrappean lake beds preserving the classic Upper Gondwana *Ptilophyllum* megaflora (cycadophytes)."
+      },
+      {
+        q: "Which formation in the Pranhita-Godavari Valley preserves important vertebrate fossils including early dinosaurs, phytosaurs, and fish scales within the Upper Gondwana sequence?",
+        options: [
+          "Kota Formation",
+          "Talchir Formation",
+          "Barren Measures",
+          "Karharbari Formation"
+        ],
+        correct: 0,
+        explanation: "The Kota Formation (Upper Gondwana, Jurassic-Early Cretaceous) in the Pranhita-Godavari basin consists of limestones, clays, and sandstones yielding famous fossil fishes (*Semionotus*), sauropod dinosaurs (*Barapasaurus*), and freshwater ostracods."
+      },
+      {
+        q: "What evidence indicates periodic marine incursions into the continental Gondwana rift basins during the Permian and Jurassic periods?",
+        options: [
+          "The presence of glacial tillites at the equator",
+          "Marine intercalations containing marine invertebrates (such as ammonoids, bivalves like *Eurydesma* and *Productus*, and foraminifera) found within the Talchir, Umia, and Jhingurdah formations",
+          "Extensive basaltic pillow lavas in coal seams",
+          "Abundant freshwater crocodile fossils"
+        ],
+        correct: 1,
+        explanation: "Episodic sea-level highstands and marine connections allowed Tethyan arms to penetrate into continental Gondwana rift troughs, leaving behind marine fossil bands (e.g., *Eurydesma* faunas in Talchir/Boulder beds and Jurassic marine beds in Kutch/Umia)."
+      },
+      {
+        q: "How do *Gangamopteris* and *Glossopteris* biostratigraphically distinguish the early Lower Gondwana units?",
+        options: [
+          "*Gangamopteris* is net-venated without a distinct midrib and dominates the Talchir and Karharbari formations; *Glossopteris* possesses a prominent midrib with anastomosing veins and dominates the Barakar and Raniganj formations",
+          "*Glossopteris* is a Cenozoic angiosperm flower",
+          "*Gangamopteris* is exclusively found in Cretaceous marine shales",
+          "Both genera are identical and restricted to the Triassic period"
+        ],
+        correct: 0,
+        explanation: "Biostratigraphically, tongue-shaped *Gangamopteris* leaves characterize the oldest Permian beds (Talchir-Karharbari), whereas midrib-bearing *Glossopteris* fronds proliferate extensively through the Barakar and Raniganj coal measures."
+      },
+      {
+        q: "What is the depositional setting and fossil content of the Umia Formation in Kutch, representing the terminal Upper Gondwana sequence?",
+        options: [
+          "Glacial tillites and boulder beds",
+          "A mixed marine-terrestrial sequence containing plant beds (*Ptilophyllum*) intercalated with marine ammonite-bearing beds of Late Jurassic to Early Cretaceous (Neocomian) age",
+          "Unmetamorphosed Archean greenstones",
+          "Eocene nummulitic oil shales"
+        ],
+        correct: 1,
+        explanation: "The Umia Formation in Kutch bridges terrestrial Upper Gondwana plant-bearing strata (*Ptilophyllum* flora) with marine Tethyan shelf sediments containing index ammonites (*Blanfordiceras*), marking the Jurassic-Cretaceous transition."
+      },
+      {
+        q: "Why are Gondwana coal deposits in India classified as 'drift' coals rather than 'situate' (in-situ) coals by many classical geologists?",
+        options: [
+          "Because the coal seams formed entirely in deep marine abyssal plains",
+          "Because plant debris and organic matter were transported and drifted by rivers into fault-bounded graben lakes and swamps rather than accumulating exclusively in situ as vast coastal peat bogs",
+          "Because the coal is made entirely of volcanic ash",
+          "Because the coal beds were drifted to India from Antarctica by plate tectonics"
+        ],
+        correct: 1,
+        explanation: "Many Indian Gondwana coal seams exhibit high ash content and clastic partings, supporting the 'drift' hypothesis where vegetal matter was washed and transported into faulted rift valley lakes/swamps, though in-situ forest growth also contributed."
+      },
+      {
+        q: "Which floral zone succeeds the *Glossopteris* flora in the Triassic Middle Gondwana sequences across peninsular India?",
+        options: [
+          "Ptilophyllum flora",
+          "Dicroidium flora (corystodont seed ferns)",
+          "Angiosperm deciduous forest flora",
+          "Quaternary grass steppe flora"
+        ],
+        correct: 1,
+        explanation: "Following the end-Permian extinction of *Glossopteris*, the Triassic Middle Gondwana successions worldwide are marked by the proliferation of the fork-leaved seed fern *Dicroidium*."
+      },
+      {
+        q: "How did the breakup of the Gondwana supercontinent in the Mesozoic affect sedimentation patterns in the Indian peninsula?",
+        options: [
+          "It caused uniform continental sedimentation across a stable shield",
+          "It induced lithospheric extension, reactivation of ancient rift lineaments, basaltic volcanism (Rajmahal and Deccan), and marine transgressions along the newly formed eastern and western continental margins",
+          "It produced alpine mountain building and molasse deposition in peninsular India",
+          "It converted all river basins into glacial ice sheets"
+        ],
+        correct: 1,
+        explanation: "The Cretaceous breakup of East Gondwana (India-Antarctica-Australia separation) triggered major rift tectonics, thermal doming, voluminous trap volcanism (Rajmahal and Deccan), and marine incursions along coastal basins (Cauvery, Kutch, Assam)."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

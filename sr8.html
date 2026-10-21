@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P–T Boundary &amp; Marine Mesozoic Successions</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR8 • P–T BOUNDARY &amp; MARINE MESOZOIC SUCCESSIONS</div>
+      <h1>P–T Boundary &amp; Marine Mesozoic Successions</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "In the Spiti Valley Tethyan succession, what is the ascending stratigraphic order of the Triassic formations directly overlying the Permian Gungri Formation?",
+        options: [
+          "Talchir → Barakar → Raniganj",
+          "Chocolate Limestone (Otoceras beds) → Kalikho Formation → Daonella Limestones & Shales → Kuti Shale → Kioto Limestone",
+          "Bagalkot Group → Badami Group → Bhima Group",
+          "Uttatur → Trichinopoly → Ariyalur"
+        ],
+        correct: 1,
+        explanation: "Following the Permian Kuling Group, the Spiti Triassic succession commences with the Chocolate Limestone (containing earliest Triassic *Otoceras* and *Ophiceras*), followed by the Daonella/Muschelkalk beds, Kuti Shales, and the massive Norian-Rhaetian Kioto Limestone."
+      },
+      {
+        q: "What is the lithological character and paleontological significance of the famous Spiti Shales (Upper Jurassic to Lower Cretaceous)?",
+        options: [
+          "Terrestrial red-bed sandstones containing dinosaur bones and Glossopteris leaves",
+          "Dark, marine, pyritiferous black shales famous for their prolific, well-preserved ammonoid fauna (such as *Perisphinctes*, *Hoplites*, and *Belemnites*), representing deep shelf sedimentation",
+          "Glacial tillites with striated dropstones",
+          "Eocene nummulitic limestones"
+        ],
+        correct: 1,
+        explanation: "The Spiti Shales (Oxfordian to Valanginian) are dark grey to black marine shales containing nodules packed with world-renowned ammonoids (*Perisphinctes*, *Aulacosphinctes*), serving as the classic type succession for Jurassic-Cretaceous biostratigraphy in the Himalayas."
+      },
+      {
+        q: "How is the Mesozoic succession of Kutch (Gujarat) formally subdivided from base to top?",
+        options: [
+          "Patcham Formation → Chari Formation → Katrol Formation → Umia Formation",
+          "Lathi Formation → Jaisalmer Formation → Baisakhi Formation → Parihar Formation",
+          "Uttatur → Trichinopoly → Ariyalur → Niniyur",
+          "Semri → Kaimur → Rewa → Bhander"
+        ],
+        correct: 0,
+        explanation: "The Kutch Mesozoic basin comprises: (1) Patcham Formation (Bathonian coral limestones), (2) Chari Formation (Callovian-Oxfordian shales with the Dhosa Oolite marker), (3) Katrol Formation (Kimmeridgian-Titician shales and sandstones), and (4) Umia Formation (Tithonian-Neocomian marine/terrestrial beds)."
+      },
+      {
+        q: "What is the stratigraphic and marker significance of the 'Dhosa Oolite' within the Chari Formation of Kutch?",
+        options: [
+          "It is a barren glacial tillite horizon",
+          "It is a highly fossiliferous, hematitic oolitic limestone bed packed with diverse ammonoids (*Mayaites*, *Epeltoceras*), serving as an indispensable chronostratigraphic marker across Kutch",
+          "It is a basaltic lava flow of the Deccan Traps",
+          "It is an Eocene evaporite deposit containing gypsum"
+        ],
+        correct: 1,
+        explanation: "The Dhosa Oolite is a distinctive ferruginous, oolitic limestone marker bed at the top of the Chari Formation, teeming with ammonites and providing a crucial datum plane for Callovian-Oxfordian correlation in western India."
+      },
+      {
+        q: "What is the ascending stratigraphic succession of the Mesozoic basin in Jaisalmer (Western Rajasthan)?",
+        options: [
+          "Lathi Formation (Lower-Middle Jurassic continental sandstone) → Jaisalmer Formation (Middle-Upper Jurassic fossiliferous limestone) → Baisakhi Formation → Parihar Formation → Habur Formation (Cretaceous marine beds)",
+          "Patcham → Chari → Katrol → Umia",
+          "Talchir → Barakar → Raniganj → Panchet",
+          "Gulcheru → Vempalle → Pulivendla → Tadpatri"
+        ],
+        correct: 0,
+        explanation: "The Jaisalmer Mesozoic sequence transitions from continental fluvial sandstones of the Lathi Formation upward into marine shelf limestones (Jaisalmer Formation) and subsequent clastic-carbonate units (Baisakhi, Parihar, and Habur formations)."
+      },
+      {
+        q: "How is the Cretaceous marine sedimentary succession of the Cauvery Basin (East Coast of India) subdivided from base to top?",
+        options: [
+          "Uttatur Group → Trichinopoly Group → Ariyalur Group → Niniyur Group (extending into Palaeocene)",
+          "Patcham → Chari → Katrol → Umia",
+          "Jodhpur → Bilara → Nagaur",
+          "Semri → Kaimur → Rewa → Bhander"
+        ],
+        correct: 0,
+        explanation: "The Cretaceous-Palaeocene of the Cauvery Basin (Tiruchirappalli district) comprises: (1) Uttatur Group (Albian-Cenomanian dark clays and coral reefs), (2) Trichinopoly Group (Turonian-Coniacian sandy limestones), (3) Ariyalur Group (Santonian-Maastrichtian fossiliferous marls and sandstones), and (4) Niniyur Group (Danian limestone)."
+      },
+      {
+        q: "What characteristic fossil assemblages and depositional environments characterize the Uttatur Group in the Cauvery Basin?",
+        options: [
+          "Freshwater Glossopteris flora and coal seams",
+          "Marine dark grey clays and gypsum-bearing shales containing warm-water Tethyan ammonoids, foraminifera, and coral reefs, associated with submarine volcanic activity (Perambalur basic flows)",
+          "Glacial diamictites and varved shales",
+          "Terrestrial red-bed sandstones with sauropod bones"
+        ],
+        correct: 1,
+        explanation: "The Uttatur Group represents the initial Cretaceous marine transgression along the east coast, consisting of phosphatic, gypsum-bearing clays and shales rich in ammonites, inoceramids, and foraminifera."
+      },
+      {
+        q: "What are the Bagh Beds of central India (Narmada Valley), and what age and environment do they represent?",
+        options: [
+          "Permian glacial tillites and coal-bearing shales",
+          "Cenomanian to Turonian marine shelf deposits (conglomerate, Nodular Limestone, and Deola-Malkana sandstone/limestone) representing an epicontinental arm of the Tethys transgressing into central peninsular India",
+          "Eocene nummulitic limestones of the Himalayan foothills",
+          "Neoproterozoic stromatolitic dolostones"
+        ],
+        correct: 1,
+        explanation: "The Bagh Beds occur as isolated outliers along the Narmada Valley, recording a Mid-Cretaceous marine transgression that flooded the central Indian craton, yielding echinoids (*Holaster*), bivalves (*Exogyra*), and ammonoids."
+      },
+      {
+        q: "What is the geological significance of the Lameta Beds (Infratrappean beds) underlying the Deccan Traps?",
+        options: [
+          "They are deep marine abyssal radiolarian cherts",
+          "They represent estuarine, lacustrine, and terrestrial calcareous sandstones and clays (such as Jabalpur/Luhari formations) famous for preserving dinosaur skeletal remains (*Titanosaurus*, *Indosaurus*) and dinosaur nesting sites right before the Deccan flood basalt eruptions",
+          "They are Permian coal measures",
+          "They are Precambrian iron-ore formations"
+        ],
+        correct: 1,
+        explanation: "The Lameta Formation rests unconformably on older rocks immediately beneath the Deccan Traps (Maastrichtian). They are celebrated for continental fossil content, including dinosaur bones, eggs, and coprolites, sealed by the earliest Deccan basalt flows."
+      },
+      {
+        q: "How do the K–Pg (Cretaceous-Paleogene) boundary extinction events manifest in Indian stratigraphic successions?",
+        options: [
+          "They are marked exclusively by Cambrian trilobite extinctions",
+          "They coincide closely with the colossal mantle plume-related Deccan Traps volcanism (and intertrappean fossil extinctions), marking one of Earth's major mass extinction events",
+          "They are represented by uninterrupted Permian glacial tillite deposition",
+          "They show no record of volcanic or paleontological change"
+        ],
+        correct: 1,
+        explanation: "The K–Pg boundary in India is uniquely tied to the initiation and climax of the Deccan Traps flood basalt volcanism, with intertrappean fossil beds capturing the ecological stresses and final extinction of dinosaurs and marine plankton."
+      },
+      {
+        q: "What is the index fossil value of ammonoids (such as *Hoplites*, *Acanthoceras*, and *Stoliczkai*) in the Cretaceous shelf basins of India (Cauvery and Kutch)?",
+        options: [
+          "They are used for Precambrian correlation",
+          "They serve as premier high-resolution index fossils for inter-regional zonation and correlation of Albian, Cenomanian, and Turonian marine stages",
+          "They are terrestrial plant fossils used to date coal seams",
+          "They indicate Quaternary glacial climates"
+        ],
+        correct: 1,
+        explanation: "Cretaceous ammonoids provide precise biochronology, allowing geologists to correlate Indian marine shelf strata (Cauvery, Kutch, Trichinopoly) directly with European standard stages."
+      },
+      {
+        q: "What is the stratigraphic and structural role of the Parihar Formation in the Jaisalmer Basin?",
+        options: [
+          "A massive freshwater limestone of Eocene age",
+          "A thick succession of non-marine, unfossiliferous white quartzose sandstones overlying the Baisakhi Formation, representing a significant regression of the Jurassic sea",
+          "An oolitic ironstone bed of Archean age",
+          "A Cretaceous ophiolitic melange"
+        ],
+        correct: 1,
+        explanation: "In the Jaisalmer sequence, the Parihar Formation consists of coarse, current-bedded continental sandstones that reflect a major regressive phase following the marine Baisakhi shales."
+      },
+      {
+        q: "Which formation in the Cauvery Basin contains the famous Ariyalur fossil wood and abundant macro-invertebrate faunas of Late Cretaceous (Santonian-Maastrichtian) age?",
+        options: [
+          "Ariyalur Group",
+          "Uttatur Group",
+          "Trichinopoly Group",
+          "Niniyur Group"
+        ],
+        correct: 0,
+        explanation: "The Ariyalur Group is the thickest and most widespread Cretaceous unit in the Cauvery Basin, noted for its fossiliferous calcareous sandstones, marls, abundant ammonites, bivalves, gastropods, and silicified fossil tree trunks."
+      },
+      {
+        q: "What depositional environment is indicated by the presence of gypsum beds and phosphatic nodules in the Uttatur Group of the Cauvery Basin?",
+        options: [
+          "Glacial outwash plains",
+          "Restricted shallow marine embayments with high evaporation rates and upwelling nutrient-rich waters promoting phosphate precipitation",
+          "High-energy alpine mountain torrents",
+          "Terrestrial peat bogs"
+        ],
+        correct: 1,
+        explanation: "The gypsum veins and phosphatic nodules within the Uttatur clays indicate restricted shallow marine shelf conditions with hypersaline pockets and organic-rich bottom waters."
+      },
+      {
+        q: "How does the Jurassic-Cretaceous transition in western India (Kutch and Jaisalmer) differ from the Tethyan Himalayan succession (Spiti)?",
+        options: [
+          "Kutch and Jaisalmer represent epicontinental shelf basins on the northern margin of the Indian craton with intermittent marine-terrestrial interactions, whereas Spiti represents deep-water continuous pelagic/hemipelagic Tethyan sedimentation",
+          "Kutch is an Archean greenstone belt",
+          "Spiti consists entirely of Eocene coal measures",
+          "There is no Mesozoic record in either region"
+        ],
+        correct: 0,
+        explanation: "While Spiti preserves deep-shelf Tethyan continuous marine shale and limestone successions, the western Indian basins (Kutch, Jaisalmer) formed in epicontinental rift settings influenced by block faulting, fluctuating shorelines, and alternating marine and plant-bearing continental beds."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

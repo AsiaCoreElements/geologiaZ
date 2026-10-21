@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aravalli–Bundelkhand &amp; Mobile Belts</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR3 • ARAVALLI–BUNDELKHAND CRATONS &amp; PROTEROZOIC MOBILE BELTS</div>
+      <h1>Aravalli–Bundelkhand &amp; Mobile Belts</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "Which major NE–SW trending reverse/thrust fault zone divides the North-Western Indian Shield into the western Aravalli–Delhi Fold Belt and the eastern Bundelkhand–Vindhyan domain?",
+        options: [
+          "Chitradurga Boundary Shear Zone",
+          "Great Boundary Fault (GBF)",
+          "Singhbhum Shear Zone (SSZ)",
+          "Palghat–Cauvery Shear Zone (PCSZ)"
+        ],
+        correct: 1,
+        explanation: "The Great Boundary Fault (GBF) is a major NE–SW trending dislocation zone (~400 km long) in southeastern Rajasthan that separates the deformed Aravalli–BGC terrane on the west from the relatively undeformed Vindhyan Supergroup and Bundelkhand Craton on the east."
+      },
+      {
+        q: "In the Archaean basement of the Aravalli Craton (Banded Gneissic Complex / Mewar Gneiss, 3.3–2.5 Ga), how are BGC-I (southern domain) and BGC-II (northern domain) distinguished?",
+        options: [
+          "BGC-I consists of unmetamorphosed Permian sandstones; BGC-II consists of Deccan basalts",
+          "BGC-I (Mewar Gneiss around Udaipur–Jagat) preserves pristine ~3.3–2.9 Ga TTG gneisses and ~2.5 Ga granites (Untala, Gingla, Berach) with a clear first-order unconformity beneath the Aravalli Supergroup; BGC-II (central/northern Rajasthan) represents a reworked poly-metamorphic complex including the granulite-facies Sandmata Complex and Mangalwar Complex",
+          "BGC-I is exclusively Neoproterozoic in age (<750 Ma) while BGC-II is Paleoarchean (>3.8 Ga)",
+          "Both BGC-I and BGC-II lack granitic intrusions or amphibolite enclaves"
+        ],
+        correct: 1,
+        explanation: "Heron's Banded Gneissic Complex (BGC) is divided into BGC-I in southern Rajasthan (Mewar Gneiss, ~3.3–2.9 Ga TTG intruded by ~2.5 Ga Berach/Untala/Gingla granites) and BGC-II in central Rajasthan, which is subdivided into the amphibolite-facies Mangalwar Complex and the high-grade granulite-facies Sandmata Complex."
+      },
+      {
+        q: "In the Paleoproterozoic Aravalli Supergroup (~2.2–1.85 Ga), what does the presence of an alumina-rich paleosol (white pyrophyllite–kyanite–muscovite schist) beneath the basal Delwara Quartzite/Volcanics signify, and which overlying formation hosts India's largest stromatolitic phosphorite deposits?",
+        options: [
+          "Deep-marine trench subduction; phosphorites occur in the Jharol Formation",
+          "Profound subaerial chemical weathering along the Eparchean-style first-order non-conformity over the BGC basement; stromatolitic phosphorite and dolomitic limestone occur in the overlying Jhamarkotra Formation",
+          "Glacial tillite deposition; phosphorites occur in the Alwar Quartzite",
+          "Cretaceous lateritization; phosphorites occur in the Malani Rhyolite"
+        ],
+        correct: 1,
+        explanation: "The base of the Lower Aravalli Group is marked by a regional palaeosol (aluminous sericite-pyrophyllite-kyanite schist) developed over the Mewar Gneiss, overlain by the Delwara Formation (basic amygdaloidal metavolcanics and quartzite). Above it, the Jhamarkotra Formation hosts world-famous stromatolitic phosphorite deposits (at Jhamarkotra, Maton, Kanpur) and carbonatites (Newania)."
+      },
+      {
+        q: "How do the Udaipur Group and the Jharol Group of the Aravalli Supergroup contrast in terms of depositional facies and tectonic setting?",
+        options: [
+          "Both groups represent arid continental red-bed deserts with evaporitic halite",
+          "The Udaipur Group (and Debari/Bari Lake sequences) represents proximal shallow-marine carbonate-clastic shelf facies on the east, whereas the Jharol Group to the west represents a distal, carbonate-free deep-marine turbidite/pelitic trough containing the Rakhabdev (Phulad) ultramafic suture lineament",
+          "The Jharol Group is a subaerial coal-bearing sequence whereas the Udaipur Group is an ophiolitic melange",
+          "The Udaipur Group is younger than the Vindhyan Supergroup"
+        ],
+        correct: 1,
+        explanation: "The Aravalli basin shows classic east-to-west bathymetric polarity: the eastern shelf comprises the Delwara, Jhamarkotra, and Udaipur formations (carbonates, phosphorites, greywackes, and Zawar Pb–Zn host dolomites), whereas the western Jharol Group comprises carbonate-free deep-water mica schists, phyllites, and thin quartzites associated with the Rakhabdev ultramafic (serpentinite) lineament."
+      },
+      {
+        q: "What is the correct ascending stratigraphic succession (oldest to youngest) of the Mesoproterozoic Delhi Supergroup (~1.72–1.45 Ga) in the North Delhi Fold Belt?",
+        options: [
+          "Ajabgarh Group → Alwar Group → Raialo Group",
+          "Delwara Group → Jhamarkotra Group → Jharol Group",
+          "Raialo Group (predominantly carbonate/mafic volcanics, e.g., Dogeta/Makrana equivalents) → Alwar Group (predominantly arenaceous orthoquartzites/arkoses) → Ajabgarh Group (predominantly argillaceous-calcareous phyllites, Kushalgarh Limestone, and hornstone breccia)",
+          "Jodhpur Group → Bilara Group → Nagaur Group"
+        ],
+        correct: 2,
+        explanation: "The Delhi Supergroup begins with the basal Raialo Group (dolomitic marbles and basic volcanics), overlain unconformably by the arenaceous Alwar Group (conglomerates, arkoses, and massive quartzites), and topped by the argillaceous-calcareous Ajabgarh Group (Kushalgarh banded limestone, Seriska hornstone breccia, and carbon phyllites hosting Khetri copper mineralization)."
+      },
+      {
+        q: "Which late Proterozoic magmatic sequence in Western Rajasthan (~780–680 Ma) represents the world's third-largest felsic large igneous province (LIP), and what is its relation to the Erinpura Granite?",
+        options: [
+          "Erinpura Granite (~850–800 Ma) represents syn- to late-orogenic S-type/calc-alkaline plutonism terminating the Delhi orogeny, which was followed by post-orogenic anorogenic/extensional bimodal-felsic volcanism and peralkaline/peraluminous A-type granites (Siwana, Jalor, Tusham) of the Malani Igneous Suite (~780–680 Ma)",
+          "Malani Igneous Suite (~3.3 Ga) forms the Archaean basement intruded by the Erinpura Granite (~2.5 Ga)",
+          "Both Erinpura and Malani are Eocene flood basalts contemporaneous with the Deccan Traps",
+          "Malani Igneous Suite consists exclusively of ultramafic komatiites and anorthosites"
+        ],
+        correct: 0,
+        explanation: "Following the culmination of the Delhi Orogeny and emplacement of the Erinpura Granite (~850–800 Ma), crustal extension across the trans-Aravalli block produced the Neoproterozoic Malani Igneous Suite (~780–680 Ma), comprising voluminous welded rhyolitic tuffs, felsites, peralkaline Siwana ring-granites, and peraluminous Jalor granites forming the basement to the Marwar Supergroup."
+      },
+      {
+        q: "The Bundelkhand Craton of north-central India is characterized by which three fundamental lithotectonic components, including a diagnostic NE–SW structural feature?",
+        options: [
+          "Charnockites, khondalites, and coal seams cut by N–S grabens",
+          "(1) Enclave Suite (~3.5–2.7 Ga BIF, metabasics, TTG gneisses of Mehroni/Rajaula), (2) Bundelkhand Granitic Complex (~2.55–2.50 Ga hornblende granodiorite, porphyritic biotite granite, and leucogranite), and (3) Spectacular NE–SW Giant Quartz Reefs (hydrothermal shear zones) cross-cut by NW–SE mafic dyke swarms (~2.15 & 1.98 Ga)",
+          "Stromatolitic phosphorites, halite evaporites, and Neogene molasse",
+          "Ophiolitic melanges, radiolarian cherts, and blueschists"
+        ],
+        correct: 1,
+        explanation: "The Bundelkhand Craton (~26,000 km²) consists of older supracrustal-TTG enclaves (up to 3.5 Ga) engulfed by voluminous ~2.5 Ga multiphase calc-alkaline granitoids. A hallmark of the craton is the array of massive, wall-like NE–SW trending hydrothermal Giant Quartz Reefs (often hosting pyrophyllite-diaspore), which are orthogonally cross-cut by NW–SE Paleoproterozoic dolerite dyke swarms."
+      },
+      {
+        q: "The ENE–WSW trending Central Indian Tectonic Zone (CITZ / Satpura Mobile Belt) welds the northern Bundelkhand–Vindhyan block to the southern Bastar–Deccan block. Which major fault/shear systems bound and internally partition the CITZ from north to south?",
+        options: [
+          "Moyar, Bhavani, Palghat–Cauvery, and Achankovil shear zones",
+          "Son–Narmada North Fault (SNNF), Son–Narmada South Fault (SNSF), Gavilgarh–Tan Shear Zone (TSZ), and the Central Indian Suture (CIS)",
+          "Main Central Thrust (MCT), Main Boundary Thrust (MBT), and Himalayan Frontal Thrust (HFT)",
+          "Singhbhum Shear Zone, Sukinda Thrust, and Mahanadi Graben Fault"
+        ],
+        correct: 1,
+        explanation: "The CITZ spans the corridor between the Son–Narmada North Fault (SNNF) in the north and the Central Indian Suture (CIS) in the south. Internally, it contains the Son–Narmada South Fault (SNSF) and the Gavilgarh–Tan Shear Zone, encompassing the Mahakoshal, Betul, and Sausar supracrustal belts plus the Tirodi Biotite Gneiss and granulite belts (Makrohar, Ramakona–Katangi, Bhandara–Balaghat)."
+      },
+      {
+        q: "Within the Central Indian Tectonic Zone (CITZ), which three supracrustal belts occur from north to south, and which specific formation in the Sausar Group hosts India's richest stratiform manganese (Mn) ore horizons (braunite–bixbyite–hollandite–gondite)?",
+        options: [
+          "Mahakoshal Belt (north), Betul Belt (central), and Sausar Belt (south); richest Mn ore and gondite occur in the Mansar Formation (and Chorbaoli/Lohangi contacts) of the Sausar Group",
+          "Sausar Belt (north), Bababudan Belt (central), and Kolar Belt (south); Mn ore occurs in the Talchir Formation",
+          "Alwar Belt, Ajabgarh Belt, and Jharol Belt; Mn ore occurs in the Delwara Formation",
+          "Chaibasa Belt, Dalma Belt, and Dhanjori Belt; Mn ore occurs in the Kolhan Limestone"
+        ],
+        correct: 0,
+        explanation: "From north to south across the CITZ lie: (1) the Paleoproterozoic Mahakoshal Rift Belt (meta-volcanics, BIF, carbonates along the Son valley), (2) the Mesoproterozoic Betul Belt (bimodal volcanics Hosting VMS Zn–Cu deposits), and (3) the Mesoproterozoic Sausar Belt (Sitasaongi → Lohangi → Mansar → Chorbaoli → Junewani → Bichua formations, resting on Tirodi Gneiss), where the pelitic Mansar Formation hosts world-class stratiform manganese oxide and gondite (spessartine + quartz) deposits."
+      },
+      {
+        q: "According to Ramakrishnan, Nanda, and coworkers (1998), the Eastern Ghats Mobile Belt (EGMB) is longitudinally subdivided from west (craton margin) to east (coast) into which four parallel lithotectonic zones?",
+        options: [
+          "Western Khondalite Zone → Central Migmatite Zone → Eastern Charnockite Zone → Coastal Transition Zone",
+          "Transition Zone → Western Charnockite Zone (WCZ) → Central Migmatite Zone (CMZ) → Eastern Khondalite Zone (EKZ)",
+          "Nilgiri Block → Madurai Block → Trivandrum Block → Nagercoil Block",
+          "BGC-I → BGC-II → Alwar Zone → Ajabgarh Zone"
+        ],
+        correct: 1,
+        explanation: "Across the strike from the Bastar/Dharwar cratonic margin (Sileru–Bastar Shear Zone) toward the Bay of Bengal, the EGMB comprises four parallel longitudinal zones: (1) Narrow western Transition Zone, (2) Western Charnockite Zone (WCZ, archean-paleoproterozoic mafic-enderbitic granulites), (3) Central Migmatite Zone (CMZ, leptynites, migmatites, anorthosites), and (4) Eastern Khondalite Zone (EKZ, garnet-sillimanite-graphite-K-feldspar metapelites and calc-granulites)."
+      },
+      {
+        q: "What mineral assemblage defines a 'Khondalite' in the Eastern Ghats and Trivandrum (Kerala Khondalite) belts, and what major supergene economic deposit caps flat-topped khondalite hills (panchpatmali, baphlimali) along the East Coast?",
+        options: [
+          "Orthopyroxene + plagioclase + quartz; capped by nickeliferous chromite",
+          "Quartz + K-feldspar + almandine-pyrope garnet + sillimanite + graphite (± biotite); deeply weathered under tropical monsoon conditions to form massive East Coast Gibbsitic Bauxite deposits",
+          "Olivine + serpentine + magnetite; capped by chrysotile asbestos",
+          "Calcite + dolomite + fluorite; capped by phosphorite beds"
+        ],
+        correct: 1,
+        explanation: "Named after the Khond tribe of Odisha/Andhra Pradesh by T.L. Walker (1902), khondalite is a high-grade granulite-facies metapelite composed of quartz, perthitic K-feldspar, garnet, sillimanite, and graphite. Intense Cenozoic chemical leaching of Si, Fe, and alkalis from flat-lying khondalite plateaus produced the world-class East Coast Bauxite province (e.g., Panchpatmali in Koraput)."
+      },
+      {
+        q: "The Eastern Ghats Mobile Belt (EGMB) records a poly-cyclic tectonic history involving two major Proterozoic Wilson Cycles and ultrahigh-temperature (UHT, >950–1000°C) metamorphism. Which two major global supercontinent assembly events do the ~1.65–1.60 Ga (Rengali/Ongole domain) and ~1.0–0.90 Ga (Eastern Ghats / Rayner province) orogenies correspond to?",
+        options: [
+          "Assembly of Pangaea (~300 Ma) and breakup of Gondwana (~130 Ma)",
+          "Assembly of Columbia/Nuna (~1.85–1.60 Ga) and Grenvillian assembly of Rodinia (~1.0–0.90 Ga), followed by Pan-African (~550–500 Ma) reworking into East Gondwana",
+          "Kenoran Orogeny (~2.7 Ga) and Alpine-Himalayan Orogeny (~50 Ma)",
+          "Caledonian Orogeny (~420 Ma) and Hercynian Orogeny (~320 Ma)"
+        ],
+        correct: 1,
+        explanation: "The Ongole domain (southern EGMB) underwent UHT metamorphism and accretion around ~1.65–1.60 Ga (Columbia supercontinent cycle), whereas the main Eastern Ghats Province (central/northern EGMB) experienced peak Grenvillian UHT metamorphism (sapphirine + quartz, osumilite, spinel + quartz assemblages at 950–1050°C, 8–10 kbar) at ~1.0–0.90 Ga during the collision of India with East Antarctica (Rayner Complex) to form Rodinia, with a final thermal overprint at ~550–500 Ma (Kuunga/Pan-African)."
+      },
+      {
+        q: "What is the classic significance of 'Fermor's Line' (1936) in Peninsular Indian geology, and how is this transition interpreted in modern metamorphic petrology?",
+        options: [
+          "It separates marine Permian strata in the north from continental Gondwana strata in the south",
+          "It delineates the boundary between the non-charnockitic (greenschist to amphibolite facies) Dharwar Craton in the north and the high-grade charnockitic (granulite facies) Southern Granulite Terrane in the south, representing a deeply exhumed oblique crustal cross-section driven by CO₂-rich fluid influx and dehydration melting (~2.51 Ga)",
+          "It marks the northern limit of Deccan Trap lava flows in central India",
+          "It separates the Western Dharwar Craton from the Eastern Dharwar Craton"
+        ],
+        correct: 1,
+        explanation: "Sir Lewis Leigh Fermor (1936) divided Peninsular India into Charnockitic and Non-Charnockitic regions along the orthopyroxene-in (Opx-in) isograd running roughly WSW–ENE through southern Karnataka and Tamil Nadu (Kabbaldurga–Krishnagiri–Chennai). Rather than a simple fault, it marks a prograde transition from middle-crustal amphibolite-facies Peninsular Gneiss to lower-crustal (7–9 kbar, 750–800°C) granulite-facies charnockites."
+      },
+      {
+        q: "In the Southern Granulite Terrane (SGT / Pandyan Mobile Belt), what is the correct north-to-south arrangement of the major crustal blocks and their bounding crustal-scale shear zones?",
+        options: [
+          "Trivandrum Block → Achankovil Shear Zone → Madurai Block → Palghat–Cauvery Shear Zone → Northern/Salem-Nilgiri-Madras Blocks",
+          "Dharwar Craton → Fermor transition → Northern Granulite Block (Nilgiri, Biligirirangan, Shevaroy/Salem, Madras) → Moyar–Bhavani–Attur & Palghat–Cauvery Shear System (PCSZ) → Madurai Block → Achankovil Shear Zone (ACSZ) → Trivandrum (Kerala Khondalite) & Nagercoil Blocks",
+          "Madurai Block → Chitradurga Shear Zone → Nilgiri Block → Great Boundary Fault → Trivandrum Block",
+          "Nagercoil Block → Moyar Shear Zone → Madras Block → Achankovil Shear Zone → Nilgiri Block"
+        ],
+        correct: 1,
+        explanation: "Moving south from the Dharwar Craton across the Fermor Line: (1) Northern Neoarchean (~2.5 Ga) Highland Blocks (Biligirirangan, Nilgiri, Salem/Shevaroy, and Madras blocks), bounded on the south by the E–W Moyar–Bhavani–Attur and Palghat–Cauvery Shear Zone (PCSZ, a Neoproterozoic suture); (2) Central Madurai Block (with Kadavur anorthosite and UHT sapphirine granulites); bounded on the south by the NW–SE Achankovil Shear Zone (ACSZ); and (3) Southern Trivandrum Block (Kerala Khondalite Belt) and Nagercoil Charnockite Block."
+      },
+      {
+        q: "How do the granulite blocks north of the Palghat–Cauvery Shear Zone (e.g., Nilgiri and Biligirirangan hills) fundamentally differ in peak metamorphic age from the blocks south of the Palghat–Cauvery Shear Zone (Madurai and Trivandrum blocks)?",
+        options: [
+          "Northern blocks experienced Neoarchean–earliest Paleoproterozoic (~2.51–2.48 Ga) high-pressure granulite metamorphism, whereas blocks south of the PCSZ experienced pervasive late Neoproterozoic–Cambrian (~550–500 Ma Pan-African) UHT granulite metamorphism during final Gondwana amalgamation",
+          "Northern blocks are Cenozoic (<50 Ma) whereas southern blocks are Paleoarchean (>3.5 Ga)",
+          "Both northern and southern blocks experienced only one metamorphic event at 1.85 Ga",
+          "Northern blocks are unmetamorphosed limestones while southern blocks are ophiolites"
+        ],
+        correct: 0,
+        explanation: "The Palghat–Cauvery Shear Zone (PCSZ) divides the SGT into two distinct age provinces: north of the PCSZ, the Nilgiri, Biligirirangan, and Salem blocks preserve Neoarchean (~2.5 Ga) charnockite formation and high-P granulite metamorphism (7–10 kbar); south of the PCSZ (Madurai, Trivandrum/Kerala Khondalite, Nagercoil), the crust was intensely reworked by ~550–500 Ma Pan-African/Kuunga UHT granulite metamorphism, linking southern India to Madagascar, Sri Lanka, and East Antarctica."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

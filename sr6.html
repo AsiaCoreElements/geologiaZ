@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marine Palaeozoic: Salt Range, Kashmir &amp; Spiti</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR6 • MARINE PALAEOZOIC: SALT RANGE, KASHMIR &amp; SPITI</div>
+      <h1>Marine Palaeozoic: Salt Range, Kashmir &amp; Spiti</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the classic ascending stratigraphic succession of the Cambrian formations in the Salt Range (Pakistan) above the Saline Series?",
+        options: [
+          "Purple Sandstone → Neobolus Shale → Magnesian Sandstone → Salt Pseudomorph Shale",
+          "Talchir Boulder Bed → Productus Limestone → Ceratite Beds",
+          "Dogra Slate → Muth Quartzite → Fenestella Shale",
+          "Haimanta Group → Thango Formation → Takche Formation"
+        ],
+        correct: 0,
+        explanation: "In the Salt Range, the Cambrian sequence overlying the controversial Saline Series consists of: (1) Purple Sandstone (reddish, current-bedded sandstone), (2) Neobolus Shale (fossiliferous greenish shale with early brachiopods like Neobolus), (3) Magnesian Sandstone (dolomitic sandstone), and (4) Salt Pseudomorph Shale (red shales with cubic salt pseudomorphs)."
+      },
+      {
+        q: "What was the core geological controversy surrounding the 'Saline Series' (gypsum, marl, and rock salt) at the base of the Salt Range succession?",
+        options: [
+          "Whether it is an Eocene evaporite thrust southward into position (Birbal Sahni's microfloral evidence) or a Precambrian-Cambrian autochthonous evaporite sequence underlying the Purple Sandstone",
+          "Whether it represents a deep-marine basaltic ophiolite suite",
+          "Whether it contains terrestrial dinosaur bones of the Cretaceous period",
+          "Whether it is an intrusive granitic batholith of Paleoarchean age"
+        ],
+        correct: 0,
+        explanation: "A famous historical debate pitted those who considered the Saline Series to be Eocene evaporites faulted/thrust below Cambrian strata (supported by Eocene micro-fossils/spores found by Birbal Sahni) against those who proved it is a Precambrian/Cambrian salt formation forming the autochthonous basement to the Purple Sandstone."
+      },
+      {
+        q: "Which formation in the Salt Range serves as one of the world's most celebrated repositories of Permian marine fossils (especially brachiopods like Productus, Spirifer, and ammonoids)?",
+        options: [
+          "Purple Sandstone",
+          "Productus Limestone (Amb, Wargal, and Chhidru formations)",
+          "Neobolus Shale",
+          "Salt Pseudomorph Shale"
+        ],
+        correct: 1,
+        explanation: "The Productus Limestone of the Salt Range (divided into the Amb, Wargal, and Chhidru formations) represents a prolific Late Permian shallow-marine shelf deposit renowned worldwide for its exceptionally rich and diverse brachiopod, ammonoid, bryozoan, and fusulinid faunas."
+      },
+      {
+        q: "In the Kashmir Basin, what is the stratigraphic position and lithology of the Dogra Slates?",
+        options: [
+          "Cretaceous coral reefs",
+          "Thick, argillaceous, low-grade slates and phyllites representing the oldest exposed basement rocks (Late Precambrian to Early Cambrian) in the Kashmir synclinorium",
+          "Eocene nummulitic limestones",
+          "Permian coal-bearing cyclothems"
+        ],
+        correct: 1,
+        explanation: "The Dogra Slates form the thick argillaceous basement of the Kashmir Phanerozoic succession, underlying Cambro-Silurian strata and resting on older metamorphic rocks."
+      },
+      {
+        q: "What is the stratigraphic significance of the Muth Quartzite in the Himalayan Palaeozoic successions (Kashmir and Spiti)?",
+        options: [
+          "It is a soft, carbonaceous shale hosting petroleum reserves",
+          "It is a persistent, pure white, massive, quartzitic sandstone horizon of Devonian age that serves as a vital marker bed across the Tethyan Himalayan zone",
+          "It is a Quaternary glacial moraine deposit",
+          "It is a basaltic flood flow of the Deccan Traps"
+        ],
+        correct: 1,
+        explanation: "Named by Stoliczka, the Muth Quartzite is a striking, pure white, cross-bedded orthoquartzite of Devonian age that spans a vast lateral extent across Kashmir, Spiti, and Kumaon, providing a reliable marker horizon between Silurian shales/limestones and Carboniferous-Permian strata."
+      },
+      {
+        q: "How are the Syringothyris Limestone and Fenestella Shales related stratigraphically in the Carboniferous sequence of Kashmir?",
+        options: [
+          "Syringothyris Limestone (early Carboniferous shallow-marine limestone rich in brachiopods) conformably underlies or laterally transitions into the Fenestella Shales (middle-late Carboniferous deltaic/shallow-marine clastics rich in bryozoans and brachiopods)",
+          "Fenestella Shales underlie the Dogra Slates in the Precambrian",
+          "Both formations are Triassic evaporites",
+          "Syringothyris Limestone is an Eocene freshwater lake deposit"
+        ],
+        correct: 0,
+        explanation: "In Kashmir, the Carboniferous succession features the massive, fossiliferous Syringothyris Limestone (Early Carboniferous) overlain by the thick clastic Fenestella Shales (Middle-Late Carboniferous), which are named after the abundant bryozoan *Fenestella*."
+      },
+      {
+        q: "What is the origin and significance of the Agglomeratic Slate in the Kashmir Carboniferous-Permian sequence?",
+        options: [
+          "It is a pure chemical limestone deposited in an arid sabkha",
+          "It is a thick clastic unit containing unsorted angular fragments of slate, quartz, and granite mixed with volcanic ash and agglomerate, marking Late Paleozoic glacial-marine conditions linked to early rifting and Gondwanan glaciation",
+          "It is a granitic batholith emplaced during the Himalayan collision",
+          "It is a Tertiary lignite-bearing clay"
+        ],
+        correct: 1,
+        explanation: "The Agglomeratic Slate of Kashmir is a thick, heterogeneous volcaniclastic and glaciomarine deposit containing dropstones, shards, and pebbly slates, reflecting Late Paleozoic tectonic instability, glaciation, and initial Gondwana breakup volcanism."
+      },
+      {
+        q: "What is the stratigraphic position and scale of the Panjal Traps in the Kashmir synclinorium?",
+        options: [
+          "A thin Quaternary clay bed",
+          "A colossal pile (up to 2,000–2,300 meters thick) of Carboniferous-Permian tholeiitic basaltic and andesitic lava flows that overlie the Agglomeratic Slates and pre-date the Zewan Formation",
+          "Eocene basalt sills intruding the Subathu Formation",
+          "Archean komatiites of the Sargur Group"
+        ],
+        correct: 1,
+        explanation: "The Panjal Traps represent a major continental flood basalt province erupted during the Late Carboniferous to Permian (contemporaneous with northern Gondwana rifting), forming immense volcanic piles across Kashmir and Pir Panjal."
+      },
+      {
+        q: "What is the key fossil assemblage and depositional age of the Zewan Formation in Kashmir?",
+        options: [
+          "Cretaceous dinosaur bones and plant leaves",
+          "Late Permian shallow-marine fossiliferous shales and limestones containing *Productus*, *Spirifer*, and ammonoids, representing the Tethyan marine transgression",
+          "Eocene nummulitic foraminifera",
+          "Cambrian trilobites and archaeocyathids"
+        ],
+        correct: 1,
+        explanation: "Overlying the Panjal Traps, the Zewan Formation consists of fossiliferous limestones and shales containing a rich Late Permian brachiopod and ammonoid fauna (*Productus*, *Spirifer rajah*), signaling marine conditions following the Panjal volcanic episode."
+      },
+      {
+        q: "In the Spiti Valley Tethyan succession, what is the basal group that forms the oldest exposed sedimentary foundation?",
+        options: [
+          "Haimanta Group (Late Precambrian to Cambrian slates, quartzites, and phyllites)",
+          "Vindhyan Supergroup",
+          "Deccan Traps",
+          "Siwalik Group"
+        ],
+        correct: 0,
+        explanation: "The Haimanta Group forms the vast, thick argillaceous-arenaceous foundation of the Spiti Tethyan basin, ranging from Late Precambrian (Ediacaran) up into the Cambrian."
+      },
+      {
+        q: "How does the Palaeozoic sequence continue upward in Spiti Valley above the Haimanta Group through the Ordovician and Silurian?",
+        options: [
+          "Thango Formation (red quartzites/shales) and Takche Formation (fossiliferous Silurian limestone/dolomite)",
+          "Talchir Boulder Bed and Barakar Coal Measures",
+          "Narji Limestone and Owk Shale",
+          "Subathu Shale and Kasauli Sandstone"
+        ],
+        correct: 0,
+        explanation: "In Spiti, the Cambrian-Ordovician-Silurian transition is represented by the Thango Formation (purple and red quartzites) followed by the Takche Formation, which is a richly fossiliferous Silurian limestone and calcareous shale unit containing corals and brachiopods."
+      },
+      {
+        q: "Which formations in the Spiti Valley represent the Carboniferous and Permian systems respectively prior to the Permian-Triassic boundary?",
+        options: [
+          "Lipak Formation and Po Formation (Carboniferous) followed by the Kuling Group / Gungri Formation (Permian black shales and cherty limestones)",
+          "Banganapalle and Narji formations",
+          "Jodhpur and Bilara formations",
+          "Chinji and Nagri formations"
+        ],
+        correct: 0,
+        explanation: "The Carboniferous in Spiti comprises the Lipak Formation (lower limestone/gypsum) and Po Formation (agglomeratic/carbonaceous shales), which are overlain by the Permian Kuling Group (Gungri Formation), famous for its black phosphatic shales and brachiopod/ammonoid faunas."
+      },
+      {
+        q: "What is the global significance of the Permian-Triassic (P-Tr) boundary section exposed in the Spiti Valley (such as at Guryul Ravine / Pingmula / Mikin Formation)?",
+        options: [
+          "It marks the transition from Eocene lakes to Oligocene rivers",
+          "It preserves an unbroken, continuous marine sedimentary transition across the end-Permian mass extinction event, marked by the *Otoceras* and *Ophiceras* ammonoid zones spanning the boundary",
+          "It contains thick bituminous coal seams of the Barakar Formation",
+          "It is an unconformity spanning the entire Mesozoic era"
+        ],
+        correct: 1,
+        explanation: "The Spiti Valley P-Tr boundary section (within the Mikin / Otoceras beds) provides one of the world's premier continuous marine archives of the end-Permian mass extinction, characterized by the survival and appearance of the survival-assemblage ammonoid genus *Otoceras*."
+      },
+      {
+        q: "In the Lesser Himalaya, what is the stratigraphic and paleoclimatic significance of the Blaini Boulder Bed (Diamictite)?",
+        options: [
+          "It is an Eocene volcanic ash bed",
+          "It represents a widespread Late Precambrian (Cryogenian / Sturtian-Marinoan) glaciomarine tillite/diamictite horizon marking global 'Snowball Earth' conditions across the Lesser Himalayan basin",
+          "It is a Cretaceous coral reef limestone",
+          "It is a Tertiary river terrace gravel deposit"
+        ],
+        correct: 1,
+        explanation: "The Blaini Boulder Bed consists of unsorted, faceted, and striated dropstones in a fine matrix, representing a major Neoproterozoic (Cryogenian) glacial event that serves as an essential regional stratigraphic marker at the base of the Lesser Himalayan Infra-Krol sequence."
+      },
+      {
+        q: "What is the ascending stratigraphic sequence of the Lesser Himalayan Krol Belt above the Blaini Formation?",
+        options: [
+          "Infra-Krol Formation (carbonaceous shales) → Krol Group (Krol A, B, C, D, E limestones/shales) → Tal Formation (phosphatic/sandy sediments spanning the Precambrian-Cambrian boundary)",
+          "Gulcheru → Vempalle → Pulivendla → Tadpatri",
+          "Talchir → Karharbari → Barakar → Raniganj",
+          "Jodhpur → Bilara → Nagaur"
+        ],
+        correct: 0,
+        explanation: "The Lesser Himalayan Krol Belt succession comprises: (1) Blaini Diamictite, (2) Infra-Krol carbonaceous shales, (3) Krol Group (divided into Krol A red/green shales, Krol B gypsum/shale, Krol C massive limestone, Krol D dolostone/chert, and Krol E limestone), and (4) Tal Formation, which spans the Precambrian-Cambrian boundary and contains small shelly fossils."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

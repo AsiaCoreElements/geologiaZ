@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singhbhum &amp; Bastar Cratons</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR2 • SINGHBHUM CRATON &amp; BASTAR CRATON</div>
+      <h1>Singhbhum &amp; Bastar Cratons</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What are the three primary tectonic domains of the Singhbhum–North Orissa region from south to north, and which prominent ductile shear zone separates the Archaean cratonic nucleus from the Proterozoic fold belt?",
+        options: [
+          "Western Dharwar, Eastern Dharwar, and Southern Granulite Terrane; separated by the Chitradurga Shear Zone",
+          "Archaean Protocontinent (Singhbhum Granite–IOG nucleus), North Singhbhum Mobile Belt, and Chhotanagpur Granite-Gneiss Complex (CGGC); with the arcuate Singhbhum Shear Zone (SSZ) separating the first two",
+          "Bastar Nucleus, Kotri–Dongargarh Belt, and Mahakoshal Belt; separated by the Son–Narmada South Fault",
+          "Banded Gneissic Complex, Aravalli Belt, and Delhi Fold Belt; separated by the Great Boundary Fault"
+        ],
+        correct: 1,
+        explanation: "The Singhbhum crustal province exhibits a classic south-to-north accretionary architecture consisting of: (1) the southern Archaean Protocontinent (Singhbhum Granite batholith and Iron Ore Group), (2) the central Proterozoic North Singhbhum Mobile Belt (separated from the Archaean nucleus by the ~200 km long arcuate Singhbhum Shear Zone), and (3) the northern Chhotanagpur Granite-Gneiss Complex (CGGC)."
+      },
+      {
+        q: "In the basement evolution of the Singhbhum Craton, what is the field relationship and geochronological order between the Older Metamorphic Group (OMG) and the Older Metamorphic Tonalite Gneiss (OMTG)?",
+        options: [
+          "OMTG (>3.6 Ga) is an unmetamorphosed platform cover resting unconformably above the Younger Kolhan Group",
+          "OMG and OMTG are Meso-Cenozoic volcanic-plutonic equivalents of the Rajmahal Traps",
+          "OMG (>3.44 Ga; pelitic schists, calc-magnesian metasediments, quartzites, and ortho-amphibolites) forms the oldest supracrustal enclave suite that is intruded and migmatized by the calc-alkaline OMTG (3.44–3.40 Ga)",
+          "OMG intrudes the Singhbhum Granite Phase III at ~3.12 Ga along conjugate dyke swarms"
+        ],
+        correct: 2,
+        explanation: "Exposed around Champua in the central Singhbhum Craton, the Older Metamorphic Group (OMG, >3.44 Ga; containing detrital zircons up to 3.6–4.0 Ga) consists of amphibolite-facies pelitic schists, para- and ortho-amphibolites, and calc-silicates that were intruded and syntectonically migmatized by the Older Metamorphic Tonalite Gneiss (OMTG) at ~3.44–3.40 Ga."
+      },
+      {
+        q: "How are the three magmatic phases of the Singhbhum Granite (SBG Phase I, Phase II, and Phase III) chronologically related to the Iron Ore Group (IOG)?",
+        options: [
+          "SBG Phase I (~3.34 Ga) and Phase II (~3.33–3.30 Ga) form the older basement prior to IOG sedimentation, whereas SBG Phase III (~3.12 Ga) intrudes the Iron Ore Group (3.30–3.10 Ga)",
+          "All three phases of Singhbhum Granite are younger than the Proterozoic Kolhan Group (<2.22 Ga)",
+          "SBG Phase I, II, and III all predate the Older Metamorphic Group (>3.44 Ga)",
+          "The Iron Ore Group forms the >3.5 Ga basement intruded simultaneously by SBG Phase I, II, and III at 2.50 Ga"
+        ],
+        correct: 0,
+        explanation: "Singhbhum Granite Phase I (~3.34 Ga, K-poor granodiorite-trondhjemite) and Phase II (~3.33–3.30 Ga, granodiorite) predate the Iron Ore Group (3.30–3.10 Ga). Following the deposition and folding of the IOG, voluminous K-rich granodioritic-granitic melts of SBG Phase III (~3.12 Ga, contemporaneous with Bonai and Chakradharpur granites) intruded the IOG."
+      },
+      {
+        q: "The Iron Ore Group (IOG) occurs in three major peripheral basins flanking the Singhbhum Granite batholith. Which option correctly names these three basins and states the general ascending lithostratigraphic sequence of the IOG?",
+        options: [
+          "Bababudan, Chitradurga, and Shimoga basins; Sequence: Kalaspura → Allampura → Santaveri → Mulaingiri",
+          "Papaghni, Chitravati, and Nallamalai basins; Sequence: Gulcheru → Vempalle → Pulivendla → Tadpatri",
+          "Bailadila, Rowghat, and Dalli-Rajhara basins; Sequence: Sukma → Amgaon → Bengpal → Nandgaon",
+          "Jamda–Koira (Noamundi), Gorumahisani–Badampahar, and Tomka–Daitari basins; Sequence: Basal Sandstone/Conglomerate → Lower Lava → Lower Phyllite/Tuff → Banded Iron Formation (BHJ/BHQ) → Upper Phyllite → Upper Lava"
+        ],
+        correct: 3,
+        explanation: "The Iron Ore Group (IOG) rings the Singhbhum Granite across the western Jamda–Koira (Noamundi–Gua horseshoe synclinorium), eastern Gorumahisani–Badampahar, and southern Tomka–Daitari (Pala Lahara) basins. Its general stratigraphy progresses from Basal Sandstone/Conglomerate → Lower Mafic/Ultramafic Lava → Lower Phyllite & Acid Tuff → Banded Iron Formation (BIF) → Upper Phyllite → Upper Lava."
+      },
+      {
+        q: "North of the Singhbhum Shear Zone, the Proterozoic Singhbhum Group is subdivided into the Chaibasa Formation and the Dhalbhum Formation. How are these two formations structurally and lithologically distinguished?",
+        options: [
+          "Chaibasa Formation is an unmetamorphosed Permian coal measure; Dhalbhum Formation is a Cretaceous flood basalt",
+          "The older Chaibasa Formation comprises higher-grade garnet-staurolite-kyanite mica schists, hornblende schists, and quartz granulites exposed in the cores of anticlines, whereas the younger Dhalbhum Formation comprises lower-grade phyllites and orthoquartzites in synclinal troughs",
+          "The Dhalbhum Formation is the oldest >3.4 Ga TTG basement, whereas the Chaibasa Formation is a younger intrusive granite",
+          "Both formations consist exclusively of evaporitic halite and gypsum beds"
+        ],
+        correct: 1,
+        explanation: "Within the North Singhbhum Mobile Belt (Singhbhum Anticlinorium), the older Chaibasa Formation occupies the cores of major anticlines and consists of medium-to-high grade pelitic schists (garnet-staurolite-kyanite bearing), ortho-amphibolites, and quartz granulites. The overlying Dhalbhum Formation occupies synclines and consists of lower-grade chloritic/sericitic phyllites, carbon phyllites, and hematitic quartzites."
+      },
+      {
+        q: "Which statement accurately characterizes the Simlipal, Dhanjori, and Dalma volcanic-sedimentary suites of the Singhbhum province?",
+        options: [
+          "Simlipal (~3.09 Ga) forms a concentric volcano-sedimentary ring basin with alternating orthoquartzites and spilitic lavas; Dhanjori (~2.8–2.1 Ga) comprises basal quartz-pebble conglomerates and tholeiitic basalts south of the SSZ; Dalma (~2.8–1.6 Ga) forms an arcuate spine of high-Mg komatiitic and tholeiitic lavas along the axis of the North Singhbhum Mobile Belt",
+          "All three suites are subaerial rhyolitic calderas emplaced during the Deccan Traps event at 65 Ma",
+          "Simlipal, Dhanjori, and Dalma are exclusively carbonate-evaporite platforms devoid of volcanic rocks",
+          "Dalma occurs at the southern margin of the Bastar Craton while Simlipal occurs in Western Rajasthan"
+        ],
+        correct: 0,
+        explanation: "The Simlipal Basin is a spectacular circular volcano-sedimentary structure (~3.09 Ga) with three alternating bands of orthoquartzite and spilitic/amygdaloidal basalt intruded by the Amjori sill and Mayurbhanj Granite. The Dhanjori Basin (basal polymictic/quartz-pebble conglomerate and mafic-ultramafic volcanics) lies along the SE margin of the SSZ, while the Dalma Volcanics form a prominent synclinal volcanic spine (komatiitic to low-K tholeiitic lavas and pyroclastics) bisecting the North Singhbhum Mobile Belt."
+      },
+      {
+        q: "What is the geological and tectonic significance of the Kolhan Group (<2.22 Ga) and the Newer Dolerite dyke swarm (~1.6–1.54 Ga) in the Singhbhum Craton?",
+        options: [
+          "The Kolhan Group represents granulite-facies lower crust, and the Newer Dolerite is older than the OMG",
+          "The Kolhan Group is intruded by Singhbhum Granite Phase I, and Newer Dolerite dykes are restricted to the CGGC",
+          "The Kolhan Group is a flat-lying, virtually unmetamorphosed Paleoproterozoic intracratonic sequence (basal conglomerate/sandstone, impersistent limestone, and manganiferous shale) resting unconformably over the Singhbhum Granite and IOG, while the Newer Dolerite dykes cross-cut the Singhbhum Granite batholith along conjugate NE–SW and NW–SE fractures",
+          "Both units are marine Permian sequences containing Productus and Eurydesma fossils"
+        ],
+        correct: 2,
+        explanation: "The Kolhan Group (<2.22 Ga) marks the cratonization of the southern Singhbhum block, depositing basal purple sandstone-conglomerate, Jhinkpani cement-grade limestone, and Jetia shale unconformably over the Singhbhum Granite and folded IOG. The Newer Dolerite dyke swarm (~1.6–1.54 Ga, with older pulses) forms a dense conjugate grid of tholeiitic dykes cutting across the Singhbhum Granite."
+      },
+      {
+        q: "The ~200 km long arcuate Singhbhum Shear Zone (also known as the Copper Belt Thrust) is a premier metallogenic province of India. Which suite of economic deposits is characteristically localized along this shear zone (at Jaduguda, Narwapahar, Turamdih, Mosaboni, and Rakha)?",
+        options: [
+          "Kimberlite-hosted diamond pipes and bedded chrysotile asbestos",
+          "Podiform chromite and PGE deposits in alpine peridotites",
+          "Bauxite laterite profiles and Tertiary lignite seams",
+          "Shear-controlled Uranium (U) – Copper (Cu) – Apatite–Magnetite – Nickel (Ni) – Molybdenum (Mo) mineralization"
+        ],
+        correct: 3,
+        explanation: "The Singhbhum Shear Zone (SSZ) marks a deep crustal thrust/ductile shear corridor hosting India's oldest and most productive uranium mines (Jaduguda, Bhatin, Narwapahar, Bagjata, Turamdih), major copper sulfide lodes (Mosaboni, Surda, Rakha, Kendadih), and apatite-magnetite veins."
+      },
+      {
+        q: "The Bastar (Bhandara) Craton of central India is a roughly quadrilateral crustal block. Which combination of rifts and mobile belts defines its four tectonic boundaries?",
+        options: [
+          "Narmada Rift (N), Cambay Rift (W), Cauvery Shear Zone (S), and Closepet Granite (E)",
+          "NW–SE Mahanadi Rift to the northeast, NW–SE Pranhita–Godavari Rift to the southwest, ENE–WSW Central Indian Tectonic Zone (Satpura Mobile Belt) to the northwest, and NE–SW Eastern Ghats Mobile Belt to the southeast",
+          "Great Boundary Fault (NW), Singhbhum Shear Zone (NE), Moyar-Bhavani Shear Zone (SW), and Andaman Trench (SE)",
+          "Indus-Tsangpo Suture Zone (N), Main Boundary Thrust (S), Chaman Fault (W), and Dauki Fault (E)"
+        ],
+        correct: 1,
+        explanation: "The Bastar Craton is sharply bounded on all four sides by major tectonic features: the Mahanadi Gondwana Graben to the NE, the Pranhita–Godavari Gondwana Graben to the SW, the Central Indian Tectonic Zone (CITZ / Satpura Belt) to the NW, and the Eastern Ghats Mobile Belt (EGMB) to the SE."
+      },
+      {
+        q: "In the Archaean basement complex of the Bastar Craton, how are the Sukma, Amgaon, and Bengpal supracrustal groups distinguished in terms of age and metamorphic grade?",
+        options: [
+          "Sukma Group (~3.5–3.0 Ga) comprises the oldest high-grade granulite to upper-amphibolite facies enclaves (cordierite-sillimanite-garnet gneisses, calc-silicates, BIF); Amgaon Group occurs in the western sector with quartzites and amphibolites; Bengpal Group (~2.6–2.5 Ga) forms a lower-to-medium grade volcano-sedimentary synclinorium (andalusite schists, amygdular metabasalts, quartzites)",
+          "Bengpal Group (>3.6 Ga) is the oldest granulite unit whereas Sukma Group (<1.0 Ga) is an unmetamorphosed Purana limestone",
+          "All three groups are Mesozoic continental red beds containing dinosaurian fossils",
+          "Sukma, Amgaon, and Bengpal are intrusive phases of the Closepet Granite"
+        ],
+        correct: 0,
+        explanation: "In southern and western Bastar, the Sukma Group (~3.5–3.0 Ga) represents the oldest high-grade supracrustal enclaves (quartzite-pelite-carbonate-BIF association at upper-amphibolite to granulite facies, equivalent to the Sargur Group). The Amgaon Group occurs along the NW margin, while the Neoarchean Bengpal Group (~2.6–2.5 Ga) forms an extensive NW–SE belt of chiastolite/andalusite schists, conglomerates, quartzites, and amygdaloidal basalts."
+      },
+      {
+        q: "U–Pb zircon geochronology of tonalitic-trondhjemitic gneisses (TTG) from the Markampara and Sukma regions of the Bastar Craton yields crystallization ages of ~3.56–3.51 Ga. What is the broader significance of this age?",
+        options: [
+          "It marks the timing of the Pan-African thermal overprint in central India",
+          "It dates the eruption of the Deccan flood basalts",
+          "It establishes that the Bastar Craton (alongside the Singhbhum OMTG/xenocrystic zircons) preserves some of the oldest Paleoarchean continental crustal nuclei in the Indian Shield",
+          "It represents the timing of the Himalayan collision"
+        ],
+        correct: 2,
+        explanation: "The ~3.56–3.51 Ga U–Pb zircon ages from the Sukma/Markampara TTG gneisses in the Bastar Craton confirm the presence of Paleoarchean protocontinental crust in central India, contemporaneous with the oldest components of the Singhbhum and Western Dharwar cratons."
+      },
+      {
+        q: "Which Paleoproterozoic group in the Bastar Craton forms two prominent N–S trending synclinal hill ranges and hosts some of India's richest, massive high-grade hematite iron ore deposits (14 numbered deposits)?",
+        options: [
+          "Khairagarh Group",
+          "Abujhmar Group",
+          "Chilpi Group",
+          "Bailadila Group (~2.4–2.1 Ga)"
+        ],
+        correct: 3,
+        explanation: "The Bailadila Group (~2.4–2.1 Ga) rests unconformably over the Bengpal Group in southern Bastar (Dantewada district). It comprises basal Loa Conglomerate, feldspathic quartzites, shales, tuffs, and thick Banded Hematite Quartzites (BHQ) that host world-class supergene-enriched hematite iron ore deposits ( extended northward into the Rowghat and Dalli-Rajhara iron ore belts)."
+      },
+      {
+        q: "Within the N–S trending Kotri–Dongargarh Mobile Belt of the Bastar Craton, what is the correct chronological order (from oldest to youngest) of the Nandgaon Group, Dongargarh Granite, and Khairagarh Group?",
+        options: [
+          "Khairagarh Group → Nandgaon Group → Dongargarh Granite",
+          "Nandgaon Group (bimodal volcanics: Bijli Rhyolite ~2.5 Ga and Pitepani Volcanics) → intruded by Dongargarh Granite (~2.46–2.3 Ga) → overlain unconformably by the Khairagarh Group",
+          "Dongargarh Granite → Bijli Rhyolite → Sukma Group",
+          "Khairagarh Group → Dongargarh Granite → Bailadila Group"
+        ],
+        correct: 1,
+        explanation: "In the Kotri–Dongargarh intracontinental rift belt, the older Nandgaon Group begins with thick acid pyroclastics and rhyolites of the Bijli Rhyolite (~2.50 Ga) followed by the Pitepani basic volcanics. This sequence was intruded by the epizonal A-type/calc-alkaline Dongargarh Granite (~2.46–2.3 Ga), which is unconformably overlain by the cyclic volcano-sedimentary Khairagarh Group."
+      },
+      {
+        q: "Which sequence correctly lists the alternating sedimentary and mafic volcanic formations of the Khairagarh Group from base to top?",
+        options: [
+          "Basal Salekasa (Bortalao) Formation → Sitagota Volcanics → Karutola Sandstone → Mangikhuta Volcanics → Ghogra Formation → Kotima Volcanics",
+          "Gulcheru Quartzite → Vempalle Dolomite → Pulivendla Quartzite → Tadpatri Shale",
+          "Lohardih Conglomerate → Chaporadih Shale → Kansapathar Sandstone → Charmuria Limestone",
+          "Kalaspura Formation → Allampura Formation → Santaveri Formation → Mulaingiri Formation"
+        ],
+        correct: 0,
+        explanation: "The Khairagarh Group exhibits three classic volcano-sedimentary rift cycles resting unconformably over the Bijli Rhyolite and Dongargarh Granite: (1) Basal Bortalao/Salekasa sandstone-shale → (2) Sitagota mafic volcanics → (3) Karutola orthoquartzite → (4) Mangikhuta mafic volcanics → (5) Ghogra sandstone-shale → (6) Kotima basaltic volcanics."
+      },
+      {
+        q: "Which two major metallic mineral deposits are genetically associated with Paleoproterozoic calc-alkaline granitoids (~2.48 Ga) in the northern Bastar Craton and post-Bengpal granitic pegmatites (Paliam/Darba granites) in southern Bastar, respectively?",
+        options: [
+          "Zawar Pb–Zn sulfide beds and Makrana marble",
+          "Sukinda chromite seams and East Coast bauxite",
+          "Malanjkhand porphyry-style Cu–Mo–Au deposit and the Bastar Cassiterite (Sn) – Columbite–Tantalite (Nb–Ta) pegmatite belt",
+          "Kolar gold-quartz lodes and Mangampeta bedded barytes"
+        ],
+        correct: 2,
+        explanation: "In northern Bastar (Balaghat district), the ~2.48 Ga Malanjkhand granitoid hosts India's largest open-pit porphyry-style copper-molybdenum-gold deposit along a N–S reef quartz zone. In southern Bastar (Tongpal–Govindpal–Mundval belt), zoned rare-metal pegmatites genetically linked to the ~2.3 Ga Paliam and Darba S-type granites intrude Bengpal metabasics and host India's primary tin (cassiterite, SnO₂) and niobium-tantalum (columbite-tantalite) resources."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / 15`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

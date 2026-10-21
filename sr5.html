@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purana Basins II: Vindhyan, Chhattisgarh &amp; Marwar</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR5 • PURANA BASINS II: VINDHYAN, CHHATTISGARH &amp; MARWAR</div>
+      <h1>Purana Basins II: Vindhyan, Chhattisgarh &amp; Marwar</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the areal distribution, shape, and overall tectonic character of the Vindhyan Supergroup in central India?",
+        options: [
+          "A small narrow graben located entirely within the Western Dharwar Craton containing coal measures",
+          "A vast horseshoe-shaped intracratonic epicontinental basin (~62,000 km² exposed, plus ~100,000 km² covered beneath the Gangetic alluvium and Deccan Traps) resting non-conformably over the Bundelkhand Craton and Archaean basement",
+          "An ophiolite-bearing suture zone located along the Indus-Tsangpo lineament",
+          "A Neogene molasse wedge formed directly in front of the Main Boundary Thrust"
+        ],
+        correct: 1,
+        explanation: "The Vindhyan Basin spans over 160,000 km² (combined exposed and covered areas) across central India, forming a massive semi-circular/horseshoe outcrop belt extending from Sonbhadra/Agra to Neemuch, characterized by thick flat-lying or gently warped sedimentary successions ranging from Paleoproterozoic to Ediacaran/Cambrian."
+      },
+      {
+        q: "How is the Vindhyan Supergroup formally subdivided into Lower and Upper Vindhyan groups from base to top?",
+        options: [
+          "Lower Vindhyan: Semri Group (~1.6–1.4 Ga); Upper Vindhyan: Kaimur Group → Rewa Group → Bhander Group",
+          "Lower Vindhyan: Papaghni Group; Upper Vindhyan: Kurnool Group",
+          "Lower Vindhyan: Alwar Group; Upper Vindhyan: Ajabgarh Group",
+          "Lower Vindhyan: Talchir Formation; Upper Vindhyan: Raniganj Formation"
+        ],
+        correct: 0,
+        explanation: "The Vindhyan Supergroup is structurally divided into the Lower Vindhyan Semri Group (carbonate-clastic-volcaniclastic sequence separated by an unconformity) and the Upper Vindhyan comprising the Kaimur, Rewa, and Bhander groups (massive arenaceous and argillaceous-carbonate platform sediments)."
+      },
+      {
+        q: "What is the petrological and stratigraphic significance of the Porcellinite Formation within the Semri Group (Lower Vindhyan)?",
+        options: [
+          "It is a marine halite-gypsum evaporite bed indicating arid sabkha conditions",
+          "It consists of silicified volcanic ash beds (tuffs) providing essential radiometric geochronological constraints (~1630–1600 Ma) for lower Vindhyan basin deposition",
+          "It is a bituminous coal seam mined for thermal power generation",
+          "It is a diamond-bearing conglomerate horizon"
+        ],
+        current: 1,
+        explanation: "The Porcellinite Formation of the Semri Group comprises fine-grained, silica-rich altered volcanic ash beds (tuffs) that provide precise radio-isotopic U–Pb zircon dates around 1.63 Ga, proving the Paleoproterozoic-Mesoproterozoic age of the lower Vindhyan succession."
+      },
+      {
+        q: "Which group within the Upper Vindhyan succession hosts important diamondiferous conglomeratic sandstone horizons (such as the Panna diamond belt)?",
+        options: [
+          "Semri Group",
+          "Kaimur Group and Rewa Group (specifically the basal conglomerates like the Itwa / Majhgawan diamondiferous horizons)",
+          "Bijawar Group",
+          "Delhi Supergroup"
+        ],
+        correct: 1,
+        explanation: "The Upper Vindhyan Kaimur and Rewa groups contain conglomeratic sandstone horizons (such as the diamondiferous conglomerate beds around Panna, Majhgawan, and Ramkheria) that concentrate alluvial diamonds eroded from underlying kimberlite/lamproite pipes."
+      },
+      {
+        q: "What characteristic fossil evidence and sedimentary features are preserved in the Bhander Group (Upper Vindhyan), and what ongoing debate surrounds trace fossils like *Clownia* or *Corumbella*?",
+        options: [
+          "Abundant dinosaur bones and mammalian teeth of the Cretaceous period",
+          "Extensive stromatolitic limestones, ripple marks, sun cracks, and controversial Ediacaran-like discoidal/tubular impressions (*Clownia*, *Corumbella*, *Beltanelliformis*) suggesting latest Proterozoic to Ediacaran ages for upper Vindhyans",
+          "Glossopteris flora and Talchir glacial tillites",
+          "Nummulitic foraminifera of Eocene age"
+        ],
+        correct: 1,
+        explanation: "The Bhander Group preserves prolific stromatolites, desiccation cracks, ripple marks, and contentious organic impressions (such as *Corumbella* and putative Ediacaran disc fossils), which have shifted chronostratigraphic estimates of the upper Bhander Group toward the Neoproterozoic-Ediacaran boundary."
+      },
+      {
+        q: "What are the Bijawar and Gwalior groups, and how do they relate spatially to the Bundelkhand Craton and the Vindhyan Basin?",
+        options: [
+          "Cenozoic basaltic flood flows overlying the Deccan Traps",
+          "Older Paleoproterozoic deformed marginal supracrustal basins resting non-conformably on the northern and southern flanks of the Bundelkhand Craton, consisting of quartzites, iron formations, and basic volcanics, unconformably overlain by the Vindhyan Supergroup",
+          "Undeformed Cretaceous marine shelf limestones of the Cauvery Basin",
+          "High-grade granulite enclaves of the Southern Granulite Terrane"
+        ],
+        correct: 1,
+        explanation: "The Bijawar Group (south of Bundelkhand) and Gwalior Group (northwest of Bundelkhand) represent older Paleoproterozoic intracratonic/rift basins containing jaspilitic BIFs, quartzites, and volcanics that are distinctly more deformed than the overlying flat-lying Vindhyan platform covers."
+      },
+      {
+        q: "How is the Chhattisgarh Supergroup (Bastar Craton) formally subdivided from base to top, and what is its general depositional framework?",
+        options: [
+          "Singhora Group → Chandarpur Group (Singhora/Lohardih sandstones) → Raipur Group (limestones and shales) / Kharsiya Group",
+          "Gulcheru → Vempalle → Pulivendla → Tadpatri",
+          "Delwara → Alwar → Ajabgarh → Raialo",
+          "Talchir → Barakar → Raniganj → Panchet"
+        ],
+        correct: 0,
+        explanation: "The Chhattisgarh Supergroup (covering ~33,000 km² on the Bastar Craton) is divided into the older Singhora Group, followed by the Chandarpur Group (arenaceous shelf sandstones like Lohardih, Chaporadih, and Kansapathar), and capped by the thick carbonate-shale sequence of the Raipur Group (Charmuria and Arjuni limestones)."
+      },
+      {
+        q: "What is the general stratigraphic sequence of the Indravati Basin in the southern Bastar Craton?",
+        options: [
+          "Basal Tiratgarh Formation (sandstone/conglomerate) → Cherakur Formation → Kanger Formation (stromatolitic limestone) → Jagdalpur Formation (shale and limestone)",
+          "Banganapalle → Narji → Owk → Paniam → Kolikuntala → Nandyal",
+          "Jodhpur → Bilara → Nagaur",
+          "Kasulbai → Lonavala → Mahabaleshwar"
+        ],
+        correct: 0,
+        explanation: "The Indravati Basin preserves an undeformed Neoproterozoic (~700–750 Ma) epicontinental sequence: basal Tiratgarh Sandstone, Cherakur Shale, Kanger Limestone (stromatolitic limestone), and the upper Jagdalpur Shale/Limestone."
+      },
+      {
+        q: "In western Rajasthan, the Marwar Supergroup rests unconformably upon which major volcanic basement suite?",
+        options: [
+          "Deccan Traps (~65 Ma tholeiites)",
+          "Malani Igneous Suite (~780–680 Ma peralkaline/peraluminous rhyolites, granites, and ring complexes)",
+          "Closepet Granite (~2.51 Ga)",
+          "Singhbhum Granite Phase III (~3.12 Ga)"
+        ],
+        correct: 1,
+        explanation: "The Marwar Supergroup (Neoproterozoic to Early Cambrian) in the western Thar desert rests non-conformably over the vast post-orogenic Malani Igneous Suite, which represents the world's third-largest felsic large igneous province."
+      },
+      {
+        q: "What is the correct ascending stratigraphic order of the three groups comprising the Marwar Supergroup?",
+        options: [
+          "Jodhpur Group (sandstones/conglomerates) → Bilara Group (limestone/dolomite and evaporites) → Nagaur Group (sandstones, shales, and gypsum/halite evaporites)",
+          "Semri Group → Kaimur Group → Bhander Group",
+          "Papaghni → Chitravati → Nallamalai",
+          "Chandarpur Group → Raipur Group → Kharsiya Group"
+        ],
+        correct: 0,
+        explanation: "The Marwar Supergroup comprises: (1) Jodhpur Group (basal clastics and Sonia/Girbhoj sandstones), (2) Bilara Group (chemically precipitated Bilara limestone, dolomite, and chert representing restricted sabkha-marine conditions), and (3) Nagaur Group (red sandstones, claystones, and massive halite/gypsum evaporite beds near Hanseran)."
+      },
+      {
+        q: "What is the economic significance of the Nagaur Group (Bilara and Hanseran evaporite sequences) in the Marwar Basin?",
+        options: [
+          "Massive metallic copper-gold porphyry ores",
+          "Extensive subsurface deposits of chemical-grade gypsum (CaSO₄·2H₂O) and halite (NaCl) evaporites mined in western Rajasthan",
+          "Prime coking coal seams for steel manufacturing",
+          "Gem-quality diamondiferous kimberlite pipes"
+        ],
+        correct: 1,
+        explanation: "The Hanseran Evaporite Group (interbedded within the Bilara-Nagaur sequence) contains thick subsurface beds of halite, anhydrite, gypsum, and potash salts, representing arid sabkha and restricted marine basin evaporation during the Ediacaran–Cambrian transition."
+      },
+      {
+        q: "How do the Purana basins of Peninsular India (such as Vindhyan, Cuddapah, Chhattisgarh, and Marwar) contribute to our understanding of Earth's Proterozoic biosphere?",
+        options: [
+          "They contain abundant skeletal vertebrate remains of dinosaurs and mammals",
+          "They preserve exceptional micro-fossils (acritarchs, cyanobacteria), macroscopic algae, diverse stromatolites, and early trace/body fossils that chronicle the evolution of life prior to the Cambrian explosion",
+          "They are completely devoid of any organic or chemical sedimentary signatures",
+          "They contain coal measures formed by flowering angiosperm forests"
+        ],
+        correct: 1,
+        explanation: "Purana basins are treasure troves of Proterozoic paleobiology, preserving stromatolitic reefs, carbonaceous microfossils, acritarchs, and Ediacaran-affiliated soft-bodied impressions that mark the biological transition from microbial mats to early multicellular organisms."
+      },
+      {
+        q: "Which formation at the top of the Semri Group (Lower Vindhyan) is widely utilized as a cement-grade limestone resource in central India (e.g., around Rohtasgarh and Satna)?",
+        options: [
+          "Rohtas Limestone (Rohtas Formation)",
+          "Banganapalle Sandstone",
+          "Kushalgarh Limestone",
+          "Shahabad Limestone"
+        ],
+        correct: 0,
+        explanation: "The Rohtas Formation, representing the uppermost unit of the Semri Group (Lower Vindhyan), consists of thin-bedded grey limestones and calcareous shales that form a major cement-raw-material resource across the Son Valley and Satna-Katni regions."
+      },
+      {
+        q: "What structural style characterizes the Vindhyan Supergroup across the Son Valley and Bundelkhand margin?",
+        options: [
+          "Intensely sheared, isoclinally folded greenschist-facies metamorphic belts",
+          "Gently dipping, tabular to open-warped strata forming structural plateaus and cuestas (escarpments) with little internal deformation, except along bounding fault zones like the Great Boundary Fault",
+          "Submarine ophiolitic accretionary prisms",
+          "High-pressure ultra-high-temperature granulite nappes"
+        ],
+        correct: 1,
+        explanation: "True to their classic platform character, Vindhyan strata are typically flat-lying or form gentle regional warps, producing striking topographic escarpments (cuestas) such as the Kaimur, Rewa, and Bhander scarps across Madhya Pradesh and Uttar Pradesh."
+      },
+      {
+        q: "Which geographic lineament separates the main Vindhyan basin outcrop from its southern extension in the Son Valley?",
+        options: [
+          "Son–Narmada Lineament (SONA)",
+          "Chitradurga Shear Zone",
+          "Moyar-Bhavani Shear Zone",
+          "Achankovil Shear Zone"
+        ],
+        correct: 0,
+        explanation: "The deep-seated Son–Narmada Lineament (SONA) crustal fracture zone runs parallel to the southern margin of the Vindhyan Basin, controlling the depositional boundary, volcanism (Porcellinites), and subsequent faulting of the Lower Vindhyan Semri Group."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

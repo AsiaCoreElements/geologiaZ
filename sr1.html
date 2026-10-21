@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Principles of Stratigraphy & Dharwar Craton</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR1 • PRINCIPLES OF STRATIGRAPHY &amp; DHARWAR CRATON</div>
+      <h1>Principles of Stratigraphy &amp; Dharwar Craton</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "In comparing classical Uniformitarianism (Lyell) with modern Actualism, how do the two philosophies differ regarding geological rates and Earth's state?",
+        options: [
+          "Both require strict constancy of geological rates (gradualism) and a steady-state Earth",
+          "Actualism accepts invariance of natural physical laws (uniformity of process) but allows rates of processes and Earth's state to vary through time",
+          "Uniformitarianism emphasizes episodic global catastrophes whereas Actualism rejects physical law invariance",
+          "Actualism states that neither physical laws nor rates of erosion operated similarly in the Precambrian"
+        ],
+        correct: 1,
+        explanation: "Charles Lyell's strict Uniformitarianism combined uniformity of process (actualism), uniformity of rate (gradualism), and uniformity of state (steady-statism). Modern Actualism retains methodological uniformitarianism (invariance of natural laws) while recognizing that process rates vary and high-energy catastrophic events periodically punctuate Earth history."
+      },
+      {
+        q: "According to the four-stage model of Indian Shield evolution, what represents Stage 1 and Stage 3 respectively?",
+        options: [
+          "Stage 1: Emplacement of Closepet-type granites; Stage 3: Platformal Purana syneclise sedimentation",
+          "Stage 1: Fundamental TTG gneisses; Stage 3: High-grade charnockite mobile belt collision",
+          "Stage 1: Older greenstone belts (primordial crust remnants like Sargur Group); Stage 3: Newer greenstone belts (elongate volcano-sedimentary troughs like Dharwar Supergroup)",
+          "Stage 1: Rift-related Gondwana grabens; Stage 3: Deccan flood basalt volcanism"
+        ],
+        correct: 2,
+        explanation: "Indian Shield evolution progresses through four stages: Stage 1 (Older Greenstone Belts, e.g., Sargur Group), Stage 2 (Fundamental Gneisses/TTG migmatites, e.g., Peninsular Gneiss), Stage 3 (Newer Greenstone Belts in elongate troughs, e.g., Dharwar Supergroup), and Stage 4 (Deformation and young granitic plutonism, e.g., Closepet Granite)."
+      },
+      {
+        q: "Which structural trend dominates the Dharwar Craton and controls the regional strike of its major schist belts?",
+        options: [
+          "NE–SW trend parallel to the Aravalli-Delhi Fold Belt",
+          "ENE–WSW trend parallel to the Satpura/Central Indian Tectonic Zone",
+          "NNW–SSE to N–S trend across Karnataka and Andhra Pradesh",
+          "E–W trend parallel to the Singhbhum Shear Zone"
+        ],
+        correct: 2,
+        explanation: "The four major structural trends of Peninsular India are the Dharwarian trend (NNW–SSE to N–S), the Aravalli trend (NE–SW), the Eastern Ghats trend (NE–SW to NNE–SSW), and the Satpura trend (ENE–WSW)."
+      },
+      {
+        q: "What is the oldest dated basement component of the Western Dharwar Craton, and what is its approximate radiometric age and composition?",
+        options: [
+          "Closepet Granite (~2.51 Ga; K-rich porphyritic monzogranite)",
+          "Gorur Gneiss (~3.35–3.36 Ga; banded trondhjemitic-tonalitic gneiss with high La/Yb and low Srᵢ)",
+          "Chitradurga Granite (~2.61 Ga; calc-alkaline biotite granite)",
+          "Mulaingiri Formation (~2.90 Ga; banded magnetite quartzite)"
+        ],
+        correct: 1,
+        explanation: "The Gorur Gneiss in the Hassan district of Karnataka yields U–Pb zircon and Rb–Sr/Pb–Pb ages around 3358 Ma (~3.35 Ga). It consists of tonalite-trondhjemite-granodiorite (TTG) gneisses with low initial ⁸⁷Sr/⁸⁶Sr and high La/Yb ratios."
+      },
+      {
+        q: "Which of the following features provides unambiguous field evidence of subaqueous ultramafic volcanism in the >3.2 Ga Sargur Group of the Western Dharwar Craton?",
+        options: [
+          "Columnar jointed rhyolitic ignimbrites at St. Mary's Island",
+          "Pillowed and spinifex-textured komatiites (high-MgO ultramafic lavas) at Banasandra and Ghattihosahalli",
+          "Thick coal-bearing cyclothems interbedded with glaciogenic diamictites",
+          "Oolitic phosphorite stromatolite bioherms with evaporates"
+        ],
+        correct: 1,
+        explanation: "The Sargur Group (>3200 Ma) occurs as high-grade enclaves within Peninsular Gneiss and preserves pillowed, spinifex-textured komatiites (MgO > 18 wt%) alongside bedded barite (Ghattihosahalli), fuchsite quartzites, pelites, and anorthosites."
+      },
+      {
+        q: "What is the geological significance of the Kartikere Conglomerate (and equivalent Neralekere/Walkunji conglomerates) in the Dharwar Craton?",
+        options: [
+          "It marks an intra-formational turbidite pulse between the Vanivilas and Ranibennur subgroups",
+          "It represents a profound first-order Eparchean non-conformity at the base of the Cuddapah Basin",
+          "It is a quartz-pebble oligomictic basal conglomerate marking the regional angular unconformity between the Peninsular Gneiss basement and the overlying Dharwar Supergroup (Bababudan Group)",
+          "It separates the Lower Gondwana Talchir tillite from the Barakar coal measures"
+        ],
+        correct: 2,
+        explanation: "The Kartikere (or Neralekere) quartz-pebble oligomictic conglomerate marks the profound regional unconformity separating the 3.2–2.9 Ga Peninsular Gneiss/Sargur basement from the overlying 2.9–2.6 Ga Dharwar Supergroup (base of the Kalaspura Formation, Bababudan Group)."
+      },
+      {
+        q: "Which is the correct ascending stratigraphic order (oldest to youngest) of the four formations comprising the Bababudan Group of the Dharwar Supergroup?",
+        options: [
+          "Santaveri Formation → Allampura Formation → Kalaspura Formation → Mulaingiri Formation",
+          "Kalaspura Formation → Allampura Formation → Santaveri Formation → Mulaingiri Formation",
+          "Mulaingiri Formation → Kalaspura Formation → Santaveri Formation → Allampura Formation",
+          "Vanivilas Formation → Kalaspura Formation → Mulaingiri Formation → Ranibennur Formation"
+        ],
+        correct: 1,
+        explanation: "In the type Bababudan belt, the Bababudan Group comprises from base to top: (1) Kalaspura Formation (basal quartz-pebble conglomerate, amygdular metabasalt, cross-bedded quartzite), (2) Allampura Formation (meta-ultramafites and metabasalts), (3) Santaveri Formation (felsic/basic volcanics and cross-bedded quartzites), and (4) Mulaingiri Formation (phyllites and thick Banded Iron Formations)."
+      },
+      {
+        q: "In the Chitradurga Group, which basal polymictic granite-clast conglomerate marks the unconformable contact over the Bababudan Group?",
+        options: [
+          "Talya (and Kaldurga) Conglomerate",
+          "Banganapalle Conglomerate",
+          "Dhanjori Conglomerate",
+          "tobacco-brown Lohardih Conglomerate"
+        ],
+        correct: 0,
+        explanation: "The Vanivilas Subgroup at the base of the Chitradurga Group commences with the polymictic Talya Conglomerate (with Kaldurga and Aimangala conglomerates representing major polymictic debrites in the belt), containing clasts of Peninsular Gneiss, BIF, and Bababudan quartzites."
+      },
+      {
+        q: "Which subgroup of the Chitradurga Group hosts prominent stromatolitic dolomitic limestones, manganese-iron formations, and phyllites prior to deep-water greywacke turbidite sedimentation?",
+        options: [
+          "Ranibennur Subgroup",
+          "Vanivilas Subgroup",
+          "Mulaingiri Subgroup",
+          "Holanarasipur Subgroup"
+        ],
+        correct: 1,
+        explanation: "The Chitradurga Group is divided into the lower Vanivilas Subgroup (shelf/platform facies with polymictic conglomerate, stromatolitic limestone/dolomite, Mn-pelites, and BIF) and the upper Ranibennur Subgroup (deep-water greywacke-argillite turbidites, polymictic conglomerates, and submarine volcanics)."
+      },
+      {
+        q: "Which major tectonic boundary separates the Western Dharwar Craton (WDC) from the Eastern Dharwar Craton (EDC)?",
+        options: [
+          "Moyar-Bhavani Shear Zone (MBSZ)",
+          "Singhbhum Shear Zone (SSZ)",
+          "Chitradurga Shear Zone along the western margin of the Closepet Granite",
+          "Great Boundary Fault (GBF)"
+        ],
+        correct: 2,
+        explanation: "The N–S trending Chitradurga Boundary Shear Zone, situated close to the western margin of the ~400 km long Closepet Granite batholith, serves as the tectonic boundary dividing the older foreland-style Western Dharwar Craton (WDC) from the juvenile calc-alkaline and gold-rich Eastern Dharwar Craton (EDC)."
+      },
+      {
+        q: "How do the Western Dharwar Craton (WDC) and Eastern Dharwar Craton (EDC) systematically contrast in crustal thickness, metamorphic grade, and greenstone belt character?",
+        options: [
+          "WDC has thinner crust (~30 km) and abundant Kolar-type gold-only volcanic belts; EDC has thicker crust (~45 km) and sediment-dominated basins",
+          "WDC has thicker crust (40–45 km), higher pressure intermediate metamorphism (kyanite-sillimanite), and sediment-dominated shelf/foreland belts; EDC has thinner crust (34–38 km), low-P/high-T andalusite-sillimanite metamorphism, and volcanic-dominated gold-bearing greenstone belts",
+          "WDC is exclusively Mesoproterozoic in age whereas EDC is Paleoarchean (>3.5 Ga)",
+          "Both cratons show identical crustal thickness, identical metamorphic baric types, and lack calc-alkaline granitoids"
+        ],
+        correct: 1,
+        explanation: "The WDC preserves 3.35–3.0 Ga TTG crust, thicker lithosphere/crust (40–45 km), medium-pressure kyanite-staurolite metamorphism, and large sediment-dominated basins (Bababudan, Shimoga, Chitradurga). The EDC features thinner crust (34–38 km), abundant ~2.55–2.52 Ga calc-alkaline Dharwar batholiths, low-pressure/high-temperature (andalusite-cordierite) metamorphism, and linear, volcanic-dominated, gold-mineralized greenstone belts (Kolar, Hutti, Ramagiri)."
+      },
+      {
+        q: "Which of the following is NOT one of the N–S trending gold-bearing greenstone superbelts of the Eastern Dharwar Craton (EDC)?",
+        options: [
+          "Kolar–Kadiri–Jonnagiri–Hutti Superbelt",
+          "Ramagiri–Penakacherla–Hungund–Kushtagi Superbelt",
+          "Veligallu–Raichur–Gadwal–Narayanpet Superbelt",
+          "Shimoga–North Kanara–Goa Superbelt"
+        ],
+        correct: 3,
+        explanation: "The Shimoga–North Kanara–Goa belt is a vast, sediment-dominated Neoarchean schist belt located within the Western Dharwar Craton (WDC). In contrast, the Kolar–Hutti, Ramagiri–Hungund, Veligallu–Gadwal, and Sandur belts belong to the Eastern Dharwar Craton."
+      },
+      {
+        q: "What is the approximate emplacement age and petrogenetic character of the Closepet Granite?",
+        options: [
+          "3358 Ma; depleted mantle-derived komatiitic suite",
+          "2518–2510 Ma (ranging down to ~2380 Ma in cooling ages); anatectic and mantle-crustal hybrid porphyritic calc-alkaline granodiorite to monzogranite",
+          "1850 Ma; peralkaline nepheline syenite ring complex",
+          "65 Ma; tholeiitic flood basalt dyke swarm"
+        ],
+        correct: 1,
+        explanation: "The Closepet Granite is an arcuate, ~400 km long and 20–30 km wide polyphase batholith emplaced at ~2518–2510 Ma (late Neoarchean), transitioning from root-zone clinopyroxene-bearing quartz monzonites and migmatites in the south (Kabbaldurga) to porphyritic pink/grey granites in the north."
+      },
+      {
+        q: "In the Kolar Schist Belt of the Eastern Dharwar Craton, which polymictic volcanic conglomerate/agglomerate horizon crops out along the eastern margin and contains clasts of granite gneiss, BIF, and basalt?",
+        options: [
+          "Champion Gneiss and Palkanmardi Conglomerate",
+          "Kartikere Oligomictic Conglomerate",
+          "Gulcheru Basal Conglomerate",
+          "Talchir Boulder Bed"
+        ],
+        correct: 0,
+        explanation: " along the eastern margin of the Kolar Schist Belt, the Champion Gneiss (a metamorphosed felsic volcanogenic/pyroclastic and sub-volcanic unit named after the Champion lode) is closely associated with the polymictic Palkanmardi Conglomerate containing pebbles of gneiss, amphibolite, and BIF."
+      },
+      {
+        q: "Detrital uraninite and pyrite grains preserved as unoxidized rounded clasts in the basal quartz-pebble conglomerates of the Bababudan Group (Walkunji/Kartikere) provide strong geological evidence for what paleo-environmental condition at ~2.9 Ga?",
+        options: [
+          "A hyper-saline, oxidizing evaporitic sabkha setting",
+          "An anoxic (oxygen-deficient) Archean atmosphere prior to the Great Oxidation Event (GOE)",
+          "Deep-marine hydrothermal black smoker precipitation below the CCD",
+          "Post-Cretaceous supergene lateritization"
+        ],
+        correct: 1,
+        explanation: "Uraninite (UO₂) and pyrite (FeS₂) rapidly oxidize and dissolve under oxygenated surface transport. Their survival as mechanically rounded detrital heavy minerals in the basal quartz-pebble conglomerates of the Bababudan Group (~2.9 Ga) demonstrates that the Mesoarchean atmosphere had extremely low free oxygen prior to the ~2.4–2.3 Ga Great Oxidation Event."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

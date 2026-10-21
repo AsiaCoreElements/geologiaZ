@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cenozoic of Sind, Assam &amp; Siwalik Biostratigraphy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR10 • CENOZOIC OF SIND, ASSAM &amp; SIWALIKS</div>
+      <h1>Cenozoic of Sind, Assam &amp; Siwalik Biostratigraphy</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the classic ascending stratigraphic succession of the Paleogene-Neogene marine and shelf formations in the Sind province (Pakistan/Western India)?",
+        options: [
+          "Ranikot Group → Laki Group → Kirthar Group → Nari Group → Gaj Group → Manchar Group",
+          "Talchir → Barakar → Raniganj → Panchet",
+          "Gulcheru → Vempalle → Pulivendla → Tadpatri",
+          "Subathu → Dagshai → Kasauli → Siwalik"
+        ],
+        correct: 0,
+        explanation: "The standard Sind Cenozoic succession comprises: (1) Ranikot (Paleocene sandstones/shales), (2) Laki (Early Eocene limestones/shales with larger foraminifera), (3) Kirthar (Middle Eocene nummulitic limestones), (4) Nari (Oligocene sandstones/limestones), (5) Gaj (Miocene marine beds), and (6) Manchar (Plio-Pleistocene continental molasse)."
+      },
+      {
+        q: "Which group in the Assam Cenozoic basin serves as the primary oil and gas reservoir and coal-bearing succession in northeastern India?",
+        options: [
+          "Jaintia Group",
+          "Barail Group (comprising Naogaon, Baragolai, and Tikak Par formations)",
+          "Surma Group",
+          "Tipam Group"
+        ],
+        correct: 1,
+        explanation: "The Oligocene Barail Group of Assam consists of thick arenaceous and argillaceous successions (Naogaon, Baragolai, and Tikak Par formations) containing prolific coal seams (Makum coalfield) and major hydrocarbon sandstone reservoirs."
+      },
+      {
+        q: "What is the ascending order of the Paleogene Jaintia Group in Assam?",
+        options: [
+          "Therria Formation → Sylhet Limestone (with Lokhart/Prang limestone members) → Kopili Formation",
+          "Barail Group → Tipam Group → Surma Group",
+          "Ranikot → Laki → Kirthar",
+          "Subathu → Dagshai → Kasauli"
+        ],
+        correct: 0,
+        explanation: "The Jaintia Group (Paleocene to Middle Eocene) represents the initial marine transgression in Assam, starting with the Therria Formation sandstones, followed by the thick fossiliferous Sylhet Limestone and calcareous Kopili Shales."
+      },
+      {
+        q: "In the Assam petroleum province, what lithostratigraphic sequence overlies the Barail Group?",
+        options: [
+          "Surma Group → Tipam Group (Tipam Sandstone) → Dihing Group (Plio-Pleistocene pebble beds)",
+          "Deccan Flood Basalts",
+          "Vindhyan Semri Group",
+          "Cuddapah Supergroup"
+        ],
+        correct: 0,
+        explanation: "Following the Barail Group, the Assam basin fills with Neogene molasse and deltaic deposits: Surma Group, Tipam Group (massive Tipam Sandstones), and the Plio-Pleistocene Dihing Group."
+      },
+      {
+        q: "What index microfossils are classically used for zonation and age determination in the Eocene Nummulitic Limestones of Sind and Assam (Kirthar and Sylhet groups)?",
+        options: [
+          "Palynomorphs and Glossopteris leaves",
+          "Benthic larger foraminifera such as *Nummulites*, *Assilina*, *Discocyclina*, and *Alveolina*",
+          "Cambrian trilobites and archaeocyathids",
+          "Permian brachiopods (*Productus*)"
+        ],
+        correct: 1,
+        explanation: "Larger benthic foraminifera like *Nummulites* and *Assilina* are the definitive index fossils for dating Paleocene-Eocene shelf limestones across Tethyan and peri-Indian basins."
+      },
+      {
+        q: "What is the depositional environment of the Subathu Formation in the Himalayan foothills?",
+        options: [
+          "Deep abyssal plain with radiolarian cherts",
+          "Shallow marine, lagoonal, and estuarine environment characterized by nummulitic limestones, carbonaceous shales, and gypsum beds",
+          "Glacial tillite outwash plains",
+          "Permian coal swamp"
+        ],
+        correct: 1,
+        explanation: "The Subathu Formation represents the Eocene marine transgression along the northern edge of the Indian plate, yielding nummulitic foraminifera, ostracods, and early mammalian teeth (e.g., *Pakicetus*)."
+      },
+      {
+        q: "How do the Dagshai and Kasauli formations differ stratigraphically and lithologically in the Simla Hills succession?",
+        options: [
+          "Dagshai is Oligocene purple-red shale/sandstone; Kasauli is Early Miocene greenish-grey sandstone and plant-bearing shale",
+          "Dagshai is Cretaceous limestone; Kasauli is Eocene basalt",
+          "Both are deep marine Permian shales",
+          "Both are Quaternary river terrace gravels"
+        ],
+        correct: 0,
+        explanation: "The Dagshai Formation (Oligocene) comprises dull red and purple mudstones and sandstones, conformably overlain by the Kasauli Formation (Early Miocene), which features grey quartz-wacke sandstones and leaf impressions."
+      },
+      {
+        q: "Which mammalian fossil zone in the Lower Siwalik Chinji Formation marks the earliest migration of proboscideans and artiodactyls into the Indian subcontinent?",
+        options: [
+          "Chinji mammalian zone (*Listriodon*, *Conohyus*)",
+          "Pinjor boulder conglomerate zone (*Equus* / *Elephas*)",
+          "Tatrot zone (*Mastodon*)",
+          "Nagri *Hipparion* datum zone"
+        ],
+        correct: 0,
+        explanation: "The Chinji Formation (Lower Siwalik, Middle Miocene) is characterized by bright red shales and sandstone bands containing rich mammalian faunas including suids (*Conohyus*) and deinotheres."
+      },
+      {
+        q: "What defines the boundary between the Middle Siwalik Nagri Formation and the Dhokpathan Formation?",
+        options: [
+          "A sharp unconformity with glacial tillites",
+          "Lithological transition from massive, cliff-forming grey sandstones (Nagri) to alternating orange-brown sandstones, clays, and marls (Dhokpathan) rich in mastodonts and hipparions",
+          "A basaltic lava flow",
+          "A marine limestone bed with ammonites"
+        ],
+        correct: 1,
+        explanation: "The Nagri Formation consists of thick, hard grey sandstones, whereas the overlying Dhokpathan Formation comprises softer, multi-colored clays and sandstones with abundant mammalian fossils (*Stegodon*, *Hipparion*)."
+      },
+      {
+        q: "Which Upper Siwalik formation is famous for yielding the earliest fossil remains of true horses (*Equus*), elephants (*Elephas*), and oxen (*Bos*) in the Plio-Pleistocene?",
+        options: [
+          "Pinjor Formation",
+          "Chinji Formation",
+          "Nagri Formation",
+          "Kamlial Formation"
+        ],
+        correct: 0,
+        explanation: "The Pinjor Formation (Upper Siwalik, Plio-Pleistocene) is globally renowned for hosting the 'Villafranchian' mammalian fauna, marked by the arrival of *Equus*, *Elephas*, and *Bos*."
+      },
+      {
+        q: "How is the Himalayan Foreland Basin (Siwalik Basin) structurally oriented relative to the Main Boundary Thrust (MBT)?",
+        options: [
+          "It is located entirely to the south of the MBT, forming the outermost foothills bounded on the south by the Himalayan Frontal Thrust (HFT)",
+          "It is located north of the Main Central Thrust (MCT) inside Tibet",
+          "It is an intra-cratonic graben in southern India",
+          "It forms the basement of the Cuddapah Basin"
+        ],
+        correct: 0,
+        explanation: "The Siwalik molasse basin sits immediately south of the Main Boundary Thrust (MBT) and north of the Himalayan Frontal Thrust (HFT), forming the active foredeep of the Himalayan collision zone."
+      },
+      {
+        q: "What role do heavy mineral assemblages (such as garnet, zircon, tourmaline, rutile, kyanite, sillimanite) play in Siwalik stratigraphy and provenance studies?",
+        options: [
+          "They are mined for industrial diamond extraction",
+          "They help trace the unroofing history, metamorphic grade evolution, and tectonic uplift stages of the rising Himalayan source terranes over time",
+          "They indicate deep-sea hydrothermal volcanic venting",
+          "They are used to date Precambrian basaltic sills"
+        ],
+        correct: 1,
+        explanation: "Changes in heavy mineral suites up-section through the Siwalik molasse record the progressive unroofing of the Lesser and Higher Himalayan metamorphic nappes."
+      },
+      {
+        q: "What is the paleoclimatic significance of caliche / nodular carbonate paleosols preserved within the Siwalik flood-plain mudstones?",
+        options: [
+          "They indicate permanent submarine marine deposition",
+          "They reflect seasonal wet-dry tropical/subtropical monsoonal climates and pedogenic carbonate formation in alluvial floodplains",
+          "They represent deep glacial ice sheets",
+          "They are hydrothermal mineral veins"
+        ],
+        correct: 1,
+        explanation: "Pedogenic carbonate nodules (caliche) in Siwalik mudstones provide essential geochemical and isotopic proxies for reconstructing paleotemperatures and monsoonal precipitation history."
+      },
+      {
+        q: "How does the Siwalik molasse sequence record the deceleration and cessation of sedimentation in local intramontane 'Dun' valleys?",
+        options: [
+          "By depositing Quaternary unconsolidated gravel terraces, alluvial fans, and boulder scree (*Dun* gravels) in structural valleys trapped between anticlinal ridges",
+          "By transforming into deep-marine limestone platforms",
+          "By erupting massive flood basalts",
+          "By undergoing granulite-facies metamorphism"
+        ],
+        correct: 0,
+        explanation: "Quaternary intermontane tectonic valleys (Duns, such as Dehra Dun) accumulate gravelly alluvial fan deposits (*Dun* gravels) as active folding and thrusting compartmentalize the outer Himalayan foothills."
+      },
+      {
+        q: "Having completed all 10 modules of Indian Stratigraphy (from Steno's laws and Eo-Archean Cratons to Siwalik mammalian biostratigraphy), what overarching concept unifies the geological evolution of the Indian subcontinent?",
+        options: [
+          "An isolated static platform unaffected by tectonics",
+          "A dynamic cratonic core that experienced successive cycles of crustal accretion, platform sedimentation, Gondwana rifting, plume volcanism, and collision-driven Himalayan mountain building",
+          "A continuous marine basin persisting since the Precambrian without interruption",
+          "A purely glacial continent located at the South Pole throughout geological time"
+        ],
+        correct: 1,
+        explanation: "The Indian Shield showcases an exceptional, complete geological chronicle spanning over 3.6 billion years—integrating ancient craton stabilization, Proterozoic intracratonic basins, Gondwanan breakup, and Alpine-Himalayan convergence."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.exports = item.options; // safety
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>

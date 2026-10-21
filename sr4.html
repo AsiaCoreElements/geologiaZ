@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purana Basins: Cuddapah, Kurnool &amp; Kaladgi</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .quiz-header h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .score-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-pill {
+      color: #0284C7;
+      font-weight: 800;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #0284C7;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #0284C7;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      path: ;
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .footer-actions {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 24px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .reset-btn:hover {
+      border-color: #0284C7;
+      background: #F0F9FF;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR4 • PURANA BASINS I: CUDDAPAH, KURNOOL &amp; KALADGI</div>
+      <h1>Purana Basins: Cuddapah, Kurnool &amp; Kaladgi</h1>
+      <div class="score-bar">
+        <span id="answered-counter">Answered: 0 / 15</span>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="footer-actions">
+      <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What is the areal extent, shape, and tectonic setting of the Cuddapah Basin on the Indian Shield?",
+        options: [
+          "An oval intracratonic rift basin (~10,000 km²) located entirely within the Western Dharwar Craton",
+          "A crescent-shaped (bow-shaped) intracratonic epicontinental basin (~44,500 km²) situated unconformably on the Eastern Dharwar Craton, bounded along its eastern margin by the Nalamalai Fold Belt and Eastern Ghats Mobile Belt",
+          "A linear Permian graben bounded by coal-bearing fault scarps in central India",
+          "An unmetamorphosed Neogene molasse basin formed in front of the Himalayan thrust wedge"
+        ],
+        correct: 1,
+        explanation: "The Cuddapah Basin covers an area of ~44,500 km² in Andhra Pradesh and Telangana, forming a characteristic crescentic/bow shape concave to the east. It rests unconformably on Peninsular Gneiss and Eastern Dharwar greenstones via the Eparchean Unconformity, with its eastern margin intensely deformed into the Nallamalai fold belt."
+      },
+      {
+        q: "What does the basal contact of the Cuddapah Supergroup over the Archean basement represent, and what is its geological name?",
+        options: [
+          "Great Boundary Fault",
+          "Eparchean Unconformity (a profound erosional non-conformity representing a vast time gap of several hundred million years between ~2.5 Ga basement and ~1.89 Ga sedimentation)",
+          "Singhbhum Shear Zone",
+          "Rudravaram Line"
+        ],
+        correct: 1,
+        explanation: "The base of the Cuddapah Supergroup rests on the Archean basement via the Eparchean Unconformity, a major non-conformity representing a prolonged period of subaerial weathering, uplift, and planation prior to Paleoproterozoic basin subsidence."
+      },
+      {
+        q: "Which option correctly lists the four major groups of the Cuddapah Supergroup in ascending stratigraphic order?",
+        options: [
+          "Kurnool Group → Bhander Group → Rewa Group → Kaimur Group",
+          "Papaghni Group → Chitravati Group → Nallamalai Group → Srisailam Group",
+          "Delwara Group → Alwar Group → Ajabgarh Group → Raialo Group",
+          "Talchir Formation → Barakar Formation → Raniganj Formation → Panchet Formation"
+        ],
+        correct: 1,
+        explanation: "The Cuddapah Supergroup (Paleoproterozoic to Mesoproterozoic) is divided from bottom to top into: (1) Papaghni Group (Gulcheru Quartzite, Vempalle Dolomite), (2) Chitravati Group (Pulivendla Quartzite, Tadpatri Shale/Volcanics, Gandikota Quartzite), (3) Nallamalai Group (Bairenkonda Quartzite, Cumbum Shale/Phyllite), and (4) Srisailam Quartzite."
+      },
+      {
+        q: "In the Papaghni Group of the Cuddapah Basin, which formation hosts world-class strata-bound stratiform barytes deposits (at Mangampeta) and chrysotile asbestos veins (at Brahmanapalli)?",
+        options: [
+          "Gulcheru Quartzite",
+          "Vempalle Formation (stromatolitic and cherty dolostone interbedded with basaltic sills and tuffs)",
+          "Bairenkonda Quartzite",
+          "Narji Limestone"
+        ],
+        correct: 1,
+        explanation: "The Vempalle Formation of the Papaghni Group consists mainly of stromatolitic limestones and dolomites. At Mangampeta, it hosts massive volcanogenic-exhalative barytes (BaSO₄) deposits formed in a local sub-basin, while intrusive dolerite sills within the Vempalle host cross-fiber chrysotile asbestos (at Brahmanapalli)."
+      },
+      {
+        q: "Which formation within the Tadpatri Shale (Chitravati Group) contains extensive phosphatic and carbonaceous shales that host India's largest low-grade uranium deposits (at Tummalapalle)?",
+        options: [
+          "Gulcheru Basal Conglomerate",
+          "Tadpatri Formation (specifically the carbonate-bearing phosphatic bands and dolostone/shale intercalations)",
+          "Narji Limestone",
+          "Srisailam Quartzite"
+        ],
+        correct: 1,
+        explanation: "The Tadpatri Formation of the Chitravati Group consists of shales, tuffs, and basic sills. In the southern part of the Cuddapah Basin (Tummalapalle-Malkapuram belt), dolostone and carbonaceous phosphatic shale bands host stratabound uranium mineralization where uranium occurs as ultrafine pitchblende/uraninite within carbonate matrices."
+      },
+      {
+        q: "How does the Nallamalai Group differ structurally and stratigraphically from the underlying Papaghni and Chitravati groups in the Cuddapah Basin?",
+        options: [
+          "The Nallamalai Group is an unmetamorphosed Neogene freshwater lake deposit",
+          "The Nallamalai Group (Bairenkonda Quartzite and Cumbum Shale/Phyllite) occupies the eastern fold belt of the basin, exhibiting tight folding, greenschist-facies metamorphism, and cleavage development, unlike the gently dipping western platform sediments",
+          "The Nallamalai Group consists entirely of Deccan basaltic flood flows",
+          "The Nallamalai Group underlies the Archean Peninsular Gneiss"
+        ],
+        correct: 1,
+        explanation: "The Nallamalai Group represents a later, deeper-water eastern depocenter that underwent intense tectonism, folding, and low-grade metamorphism during basin inversion, resulting in slate, phyllite, quartzite, and Pb-Zn-Cu mineralization (Agnigundala)."
+      },
+      {
+        q: "Which formation unconformably overlies the Cuddapah Supergroup and marks a major marine transgression in a distinct, broader intracratonic basin with six well-defined formations?",
+        options: [
+          "Kurnool Group",
+          "Vindhyan Supergroup",
+          "Malani Igneous Suite",
+          "Siwalik Group"
+        ],
+        correct: 0,
+        explanation: "The Kurnool Group rests with an erosional unconformity over the folded Cuddapah Supergroup. It represents a classic epicontinental carbonate-platform and clastic sequence consisting of: Banganapalle Sst → Narji Lst → Owk Shale → Paniam Sst → Kolikuntala Lst → Nandyal Shale."
+      },
+      {
+        q: "Which specific formation in the Kurnool Group is famous for hosting historical diamondiferous conglomerate layers (e.g., at Wajrakarur and Banganapalle)?",
+        options: [
+          "Nandyal Shale",
+          "Narji Limestone",
+          "Banganapalle Formation (basal quartz-pebble conglomerate and sandstone)",
+          "Owk Shale"
+        ],
+        correct: 2,
+        explanation: "The basal Banganapalle Formation of the Kurnool Group consists of pebbly quartzites and conglomerates that have historically served as the primary source of alluvial and placer diamonds in Andhra Pradesh (derived from kimberlite/lamproite pipes like Wajrakarur and Lattavaram)."
+      },
+      {
+        q: "What is the structural relationship between the Bagalkot Group and the Badami Group within the Kaladgi Supergroup of northern Karnataka?",
+        options: [
+          "Both groups are flat-lying and undeformed",
+          "The older Bagalkot Group is intensely folded, faulted, and tilted, whereas the younger Badami Group rests horizontally upon it with a pronounced angular unconformity",
+          "The Badami Group is older and underlies the Archean basement",
+          "They are separated by the Deccan Traps volcanic flows"
+        ],
+        correct: 1,
+        explanation: "The Kaladgi Supergroup is divided into the lower Bagalkot Group (deformed, folded clastic-carbonate sequence) and the upper Badami Group (flat-lying, shallow-marine sandstones and shales), separated by a prominent angular unconformity."
+      },
+      {
+        q: "Which Mesoproterozoic to Neoproterozoic basin located on the northern margin of the Western Dharwar Craton hosts significant sandstone-hosted uranium mineralization at Gogi?",
+        options: [
+          "Cuddapah Basin",
+          "Bhima Basin (comprising Rabanpalli, Shahabad, Sedam, Halkal, and Andola formations)",
+          "Chhatisgarh Basin",
+          "Indravati Basin"
+        ],
+        correct: 1,
+        explanation: "The Bhima Basin covers ~5,200 km² in Karnataka along the Bhima river valley. It consists of basal Rabanpalli sandstone/shale and thick Shahabad limestones. The Rabanpalli Formation unconformably overlying granites hosts sandstone-type uranium mineralization at Gogi."
+      },
+      {
+        q: "What is the general depositional environment and fossil content of the Narji Limestone (Kurnool Group) and Shahabad Limestone (Bhima Group)?",
+        options: [
+          "Glacial tillites containing glossopteris flora",
+          "Shallow-marine carbonate platform deposits preserving algal stromatolites (e.g., Collenia, Conophyton) and trace fossils",
+          "Deep-marine abyssal radiolarian cherts",
+          "Subaerial basaltic lava flows with intertrappean dinosaur bones"
+        ],
+        correct: 1,
+        explanation: "Both the Narji Limestone and Shahabad Limestone represent extensive Precambrian shallow-marine carbonate platform environments characterized by prolific algal stromatolite build-ups, oolites, and calcareous shales."
+      },
+      {
+        q: "Which tectonic lineament separates the Cuddapah Basin from the younger Kurnool sedimentary basin sequence along its eastern edge?",
+        options: [
+          "Rudravaram Line (a major fault-line contact along which Kurnool strata abut against Cuddapah rocks)",
+          "Fermor's Line",
+          "Chitradurga Shear Zone",
+          "Moyar-Bhavani Shear Zone"
+        ],
+        correct: 0,
+        explanation: "The Rudravaram Line is a prominent structural boundary along the eastern side of the Cuddapah Basin where the younger Kurnool Group sediments are faulted against or terminate sharply against the older Cuddapah Supergroup."
+      },
+      {
+        q: "How do Proterozoic Purana basins like Cuddapah, Vindhyan, and Bhima generally compare in metamorphic grade and structural deformation to older Archean greenstone-gneiss belts?",
+        options: [
+          "Purana basins are universally subjected to granulite-facies regional metamorphism and migmatization",
+          "Purana basins are characteristically unmetamorphosed to very low-grade (greenschist facies locally along bounding shear zones), undeformed to gently warped platform covers resting non-conformably on deformed Archean basements",
+          "Purana basins consist entirely of mantle-derived komatiitic lava flows",
+          "Purana basins are Cenozoic molasse troughs formed during alpine mountain building"
+        ],
+        correct: 1,
+        explanation: "Purana basins (defined by D.N. Wadia and Krishnan) are large Proterozoic epicontinental platform/intracratonic basins characterized by thick, virtually unmetamorphosed or very low-grade sedimentary successions that contrast sharply with the intensely deformed and metamorphosed Archean greenstone-gneiss basement."
+      },
+      {
+        q: "Which metallic sulfide mineralization is hosted in the carbonate-phyllite sequences of the Cumbum Formation (Nallamalai Group) at Agnigundala?",
+        options: [
+          "Chromite and Nickel-PGE",
+          "Copper, Lead, and Zinc ($\text{Cu-Pb-Zn}$) hydrothermal vein and replacement deposits",
+          "Bauxite laterite profiles",
+          "Cassiterite tin pegmatites"
+        ],
+        correct: 1,
+        explanation: "The Agnigundala mineralized belt in the northern part of the Nallamalai fold belt hosts strata-bound and vein-type copper, lead, and zinc sulfide deposits hosted within the dolomitic limestones and quartzites of the Cumbum Formation."
+      },
+      {
+        q: "What is the significance of organic-walled microfossils (acritarchs) and stromatolites found in the Purana limestone formations (such as Vempalle, Narji, and Shahabad)?",
+        options: [
+          "They provide absolute radiometric K-Ar dates of the Quaternary period",
+          "They demonstrate Precambrian biostratigraphic correlation, shallow-marine photosynthetic activity, and microbial carbonate precipitation before the proliferation of skeletal metazoans",
+          "They prove the presence of mammalian land vertebrates in the Paleoproterozoic",
+          "They are fossilized fern fronds of the Lower Gondwana coal measures"
+        ],
+        correct: 1,
+        explanation: "Precambrian Purana limestones lack shelly fossils but preserve diverse stromatolites and acritarch microfossils, which serve as essential biostratigraphic markers for Proterozoic correlation and reflect shallow marine cyanobacterial activity."
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const scoreCounter = document.getElementById('score-counter');
+    const answeredCounter = document.getElementById('answered-counter');
+    const progressFill = document.getElementById('progress-fill');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizData.length;
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function renderQuiz() {
+      quizContainer.innerHTML = '';
+      score = 0;
+      answeredCount = 0;
+      updateHeader();
+
+      quizData.forEach((item, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+
+        const meta = document.createElement('div');
+        meta.className = 'q-meta';
+        meta.textContent = `Question ${qIndex + 1} of ${totalQuestions}`;
+
+        const title = document.createElement('div');
+        title.className = 'q-title';
+        title.textContent = item.q;
+
+        const optionsList = document.createElement('div');
+        optionsList.className = 'options-list';
+
+        const expBox = document.createElement('div');
+        expBox.className = 'explanation-box';
+        expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+        item.options.forEach((optText, optIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'option-btn';
+
+          const badge = document.createElement('span');
+          badge.className = 'letter-badge';
+          badge.textContent = letters[optIndex];
+
+          const textSpan = document.createElement('span');
+          textSpan.textContent = optText;
+
+          btn.appendChild(badge);
+          btn.appendChild(textSpan);
+
+          btn.addEventListener('click', () => {
+            const allBtns = optionsList.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            answeredCount++;
+            if (optIndex === item.correct) {
+              btn.classList.add('correct');
+              score++;
+            } else {
+              btn.classList.add('wrong');
+              allBtns[item.correct].classList.add('correct');
+            }
+
+            expBox.classList.add('visible');
+            updateHeader();
+          });
+
+          optionsList.appendChild(btn);
+        });
+
+        card.appendChild(meta);
+        card.appendChild(title);
+        card.appendChild(optionsList);
+        card.appendChild(expBox);
+        quizContainer.appendChild(card);
+      });
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${totalQuestions}`;
+      answeredCounter.textContent = `Answered: ${answeredCount} / ${totalQuestions}`;
+      const pct = Math.round((answeredCount / totalQuestions) * 100);
+      progressFill.style.width = `${pct}%`;
+    }
+
+    resetBtn.addEventListener('click', () => {
+      renderQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    renderQuiz();
+  </script>
+</body>
+</html>
