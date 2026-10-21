@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprehensive Master Summary of Indian Stratigraphy</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #F8FAFC;
+      color: #15171A;
+      margin: 0;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+    }
+    .main-container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    h1, h2, .q-title {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      color: #15171A;
+      margin-top: 0;
+    }
+    .quiz-header {
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .quiz-header h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .quiz-subtitle {
+      font-size: 13px;
+      color: #64748B;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #F1F5F9;
+      border: 2px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .tabs-group {
+      display: flex;
+      gap: 8px;
+    }
+    .tab-btn {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #334155;
+    }
+    .tab-btn.active {
+      background: #C25E00;
+      color: #FFFFFF;
+      border-color: #C25E00;
+    }
+    .score-pill {
+      color: #C25E00;
+      font-weight: 800;
+    }
+    .reset-btn {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #15171A;
+    }
+    .reset-btn:hover {
+      background: #FFF7ED;
+      border-color: #C25E00;
+    }
+    .top-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .pills-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      max-width: 85%;
+    }
+    .q-pill {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      color: #15171A;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid #CBD5E1;
+      transition: all 0.15s ease;
+    }
+    .q-pill.active {
+      background: #C25E00;
+      color: #FFFFFF;
+      border-color: #C25E00;
+    }
+    .q-pill.answered-correct {
+      background: #ECFDF5;
+      color: #059669;
+      border-color: #059669;
+    }
+    .q-pill.answered-wrong {
+      background: #FEF2F2;
+      color: #DC2626;
+      border-color: #DC2626;
+    }
+    .save-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #15171A;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .save-btn:hover {
+      background: #FFF7ED;
+      border-color: #C25E00;
+      color: #C25E00;
+    }
+    .question-card {
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .q-meta {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #C25E00;
+      margin-bottom: 6px;
+    }
+    .q-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #15171A;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #C25E00;
+      background: #FFF7ED;
+    }
+    .option-btn:disabled {
+      cursor: default;
+    }
+    .letter-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 13px;
+      color: #15171A;
+    }
+    .option-btn.correct {
+      background: #ECFDF5;
+      border-color: #059669;
+      color: #065F46;
+      font-weight: 700;
+    }
+    .option-btn.correct .letter-badge {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .option-btn.wrong {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #991B1B;
+      font-weight: 600;
+    }
+    .option-btn.wrong .letter-badge {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+    .explanation-box {
+      display: none;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      color: #0C4A6E;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+    .explanation-box.visible {
+      display: block;
+    }
+    .step-nav-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .nav-action-btn {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-bottom-width: 4px;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #15171A;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-action-btn:hover:not(:disabled) {
+      border-color: #C25E00;
+      background: #FFF7ED;
+    }
+    .nav-action-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    .nav-action-btn.primary {
+      background: #C25E00;
+      color: #FFFFFF;
+      border-color: #9A4B00;
+    }
+    .nav-action-btn.primary:hover {
+      background: #A85200;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+        border-radius: 20px;
+      }
+      .quiz-header h1 {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="quiz-header">
+      <div class="quiz-subtitle">MODULE SR11 • COMPREHENSIVE MASTER SUMMARY OF INDIAN STRATIGRAPHY</div>
+      <h1>Indian Stratigraphy: Master Summary Assessment</h1>
+      <div class="controls-row">
+        <div class="tabs-group">
+          <button class="tab-btn active" id="tab-step" type="button">Step-by-Step</button>
+          <button class="tab-btn" id="tab-all" type="button">All Questions</button>
+        </div>
+        <span class="score-pill" id="score-counter">Score: 0 / 15</span>
+        <button class="reset-btn" id="reset-btn" type="button">Reset Quiz</button>
+      </div>
+    </div>
+
+    <!-- Top Question Navigation Bar -->
+    <div class="top-nav-bar">
+      <div class="pills-container" id="pills-container"></div>
+      <button class="save-btn" id="save-btn" type="button">
+        🔖 Save
+      </button>
+    </div>
+
+    <div id="quiz-workspace"></div>
+
+    <div class="step-nav-footer" id="step-footer">
+      <button class="nav-action-btn" id="prev-btn" type="button">&lt; Previous</button>
+      <button class="nav-action-btn primary" id="next-btn" type="button">Next Question &gt;</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        q: "What fundamental structural boundary separates the older Western Dharwar Craton (WDC) foreland from the younger Eastern Dharwar Craton (EDC) accretionary terrain?",
+        options: [
+          "Great Boundary Fault (GBF)",
+          "Chitradurga Boundary Shear Zone running along the western margin of the Closepet Granite",
+          "Singhbhum Shear Zone (SSZ)",
+          "Palghat-Cauvery Shear Zone (PCSZ)"
+        ],
+        correct: 1,
+        explanation: "The Chitradurga Shear Zone, situated along the western margin of the ~400 km long Closepet Granite batholith, serves as the major tectonic boundary dividing the WDC (thicker TTG crust, kyanite-sillimanite facies, large sedimentary belts) from the EDC (thinner crust, calc-alkaline batholiths, N-S gold-bearing volcanic superbelts)."
+      },
+      {
+        q: "In the Singhbhum Craton, what is the chronological and stratigraphic position of the Iron Ore Group (IOG) relative to the Singhbhum Granite?",
+        options: [
+          "IOG forms the basement that is older than all phases of the Singhbhum Granite",
+          "Singhbhum Granite Phases I (~3.34 Ga) and II (~3.33–3.30 Ga) predate the Iron Ore Group (3.30–3.10 Ga), whereas Phase III (~3.12 Ga) intrudes into the folded IOG",
+          "The Iron Ore Group is a Neogene molasse deposit overlying the Deccan Traps",
+          "IOG is equivalent to the Vindhyan Supergroup"
+        ],
+        correct: 1,
+        explanation: "Singhbhum Granite Phases I and II form the early protocontinental basement beneath the Iron Ore Group (3.30–3.10 Ga), which consists of basal sandstones, mafic lavas, phyllites, and thick BIFs. Subsequently, Phase III granites (~3.12 Ga) intruded the IOG sequence."
+      },
+      {
+        q: "What does the Eparchean Unconformity signify across Peninsular Indian shield geology?",
+        options: [
+          "A Pleistocene glacial tillite horizon in the Himalayas",
+          "A profound first-order non-conformity representing a vast erosion and subaerial weathering gap between deformed Archean basement complexes (~2.5 Ga) and overlying Proterozoic Purana basins (e.g., Cuddapah/Vindhyan)",
+          "The contact between Deccan basalts and intertrappean lake beds",
+          "The thrust boundary between the Higher Himalaya and Lesser Himalaya"
+        ],
+        correct: 1,
+        explanation: "The Eparchean Unconformity marks a major global unconformity spanning hundreds of millions of years of subaerial planation, separating crystalline Archean basements from overlying epicontinental Proterozoic platform sediments."
+      },
+      {
+        q: "Which formation in the Lower Cuddapah Papaghni Group hosts world-class volcanogenic-exhalative barytes deposits (at Mangampeta) and chrysotile asbestos veins?",
+        options: [
+          "Gulcheru Quartzite",
+          "Vempalle Formation (stromatolitic dolostones and basic sills)",
+          "Bairenkonda Quartzite",
+          "Narji Limestone"
+        ],
+        correct: 1,
+        explanation: "The Vempalle Formation of the Papaghni Group consists of dolostones and limestones interbedded with basic sills, hosting massive barite deposits at Mangampeta and cross-fiber chrysotile asbestos at Brahmanapalli."
+      },
+      {
+        q: "What is the petrological and geochronological significance of the Porcellinite Formation within the Semri Group (Lower Vindhyan)?",
+        options: [
+          "It is a halite-gypsum evaporite bed of Eocene age",
+          "It comprises silicified volcanic ash tuffs that provide vital radio-isotopic U–Pb zircon dates (~1.63 Ga) constraining early Vindhyan sedimentation",
+          "It is a bituminous coal seam mined for power generation",
+          "It is a diamond-bearing conglomeratic sandstone"
+        ],
+        correct: 1,
+        explanation: "The Porcellinite Formation contains altered silica-rich volcanic ash tuffs, yielding U-Pb zircon ages around 1.63 Ga that date the Paleoproterozoic initiation of the Vindhyan basin."
+      },
+      {
+        q: "Which formation within the Lower Gondwana coal measures serves as the primary prime coking coal repository of India and is dominated by *Glossopteris* flora?",
+        options: [
+          "Talchir Formation",
+          "Barakar Formation",
+          "Barren Measures",
+          "Panchet Formation"
+        ],
+        correct: 1,
+        explanation: "The Barakar Formation (Early Permian) is India's principal coal-bearing unit, accumulating thick multi-seam coal measures in fault-bounded rift grabens under warm temperate conditions characterized by *Glossopteris* seed-ferns."
+      },
+      {
+        q: "What is the stratigraphic relationship and significance of the Panjal Traps in the Kashmir synclinorium?",
+        options: [
+          "Cretaceous flood basalts erupted at 65 Ma during the Deccan event",
+          "A massive volcanic pile (up to 2,300 m thick) of Carboniferous-Permian tholeiitic basalts overlying Agglomeratic Slates, linked to northern Gondwana rifting",
+          "Archean komatiites of the Sargur Group",
+          "Eocene nummulitic basalt sills"
+        ],
+        correct: 1,
+        explanation: "The Panjal Traps represent voluminous Late Paleozoic continental flood basalts in Kashmir, erupting onto glaciomarine agglomeratic slates during the early breakup of Gondwanaland."
+      },
+      {
+        q: "In the Spiti Valley Tethyan succession, what geological feature characterizes the Permian-Triassic (P-Tr) boundary section (Mikin Formation)?",
+        options: [
+          "A major angular unconformity spanning the entire Mesozoic era",
+          "An unbroken, continuous marine sedimentary transition across the end-Permian mass extinction marked by *Otoceras* and *Ophiceras* ammonoid survival zones",
+          "Thick bituminous coal seams of the Barakar Formation",
+          "Deccan basaltic lava flows interbedded with dinosaur bones"
+        ],
+        correct: 1,
+        explanation: "The Spiti Valley P-Tr boundary section provides a continuous pelagic marine archive across the end-Permian mass extinction, highlighted by the classic *Otoceras* ammonoid zone."
+      },
+      {
+        q: "What is the lithological and faunal marker characteristic of the 'Dhosa Oolite' in the Mesozoic succession of Kutch (Gujarat)?",
+        options: [
+          "A glacial tillite with striated boulders",
+          "A ferruginous, oolitic limestone marker bed packed with diverse Callovian-Oxfordian ammonoids (*Mayaites*, *Epeltoceras*)",
+          "A freshwater Eocene coal seam",
+          "An unfossiliferous quartzite"
+        ],
+        correct: 1,
+        explanation: "The Dhosa Oolite is a prominent ferruginous oolitic limestone at the top of the Chari Formation, serving as a key chronostratigraphic marker packed with middle Jurassic ammonites."
+      },
+      {
+        q: "What is the geological origin and age of the Deccan Traps flood basalt province?",
+        options: [
+          "Early Cretaceous (~132 Ma) basalts linked to the Kerguelen plume",
+          "Latest Cretaceous to Early Paleocene (~65–66 Ma) continental flood basalts erupted over <1 million years due to the Réunion mantle plume head",
+          "Miocene molasse basalts of the Siwalik foothills",
+          "Archean greenstone pillow lavas"
+        ],
+        correct: 1,
+        explanation: "The Deccan Traps (~65–66 Ma) cover ~500,000 km² in western and central India, erupted rapidly over the K–Pg boundary interval driven by the Réunion mantle plume."
+      },
+      {
+        q: "What plate-tectonic mechanism triggered the Himalayan Orogeny and the formation of the Himalayan Foreland Basin?",
+        options: [
+          "Rifting of India from Antarctica in the Jurassic",
+          "Collision of the Indian plate with the Kohistan-Ladakh island arc and Eurasia during the Early Eocene (~50–55 Ma), causing crustal shortening and uplift",
+          "Subduction of the Pacific plate beneath Assam",
+          "Opening of the Narmada rift valley"
+        ],
+        correct: 1,
+        explanation: "The northward drift of India led to the closure of Neo-Tethys and initial continent-continent collision with Eurasia at ~50–55 Ma, initiating mountain building and the subsiding Siwalik foredeep."
+      },
+      {
+        q: "What is the classic tripartite subdivision of the Siwalik Group (Neogene-Pleistocene molasse) from base to top?",
+        options: [
+          "Lower Siwalik (Chinji/Kamlial) → Middle Siwalik (Nagri/Dhokpathan) → Upper Siwalik (Tatrot/Pinjor/Boulder Conglomerate)",
+          "Semri → Kaimur → Rewa → Bhander",
+          "Uttatur → Trichinopoly → Ariyalur",
+          "Patcham → Chari → Katrol → Umia"
+        ],
+        correct: 0,
+        explanation: "The Siwalik Group is subdivided into Lower Siwalik (red beds), Middle Siwalik (massive grey sandstones with *Hipparion*), and Upper Siwalik (coarse conglomerates with *Equus* and *Elephas*)."
+      },
+      {
+        q: "What major tectonic significance is attributed to the Main Central Thrust (MCT) and Main Boundary Thrust (MBT) in the Himalayas?",
+        options: [
+          "They are strike-slip faults bounding Gondwana coal grabens",
+          "They are major south-vergent crustal-scale thrusts; the MCT separates Higher Himalayan Crystallines from Lesser Himalaya, and the MBT separates Lesser Himalaya from Siwalik molasse",
+          "They are normal faults bounding the Cuddapah Basin",
+          "They represent Archaean greenstone shear zones"
+        ],
+        correct: 1,
+        explanation: "The MCT and MBT are principal tectonic boundaries emplacing higher-grade metamorphic and crystalline nappes southward over lower-grade and sedimentary foreland sequences during Himalayan convergence."
+      },
+      {
+        q: "What do stable carbon isotope ($\delta^{13}\text{C}$) analyses of Siwalik palaeosols reveal about Late Miocene environmental changes in northern India?",
+        options: [
+          "An abrupt transition from C3-dominant forests to C4-dominant grasslands around 8–7 Ma, reflecting intensification of the South Asian monsoon",
+          "The onset of Proterozoic snowball earth glaciation",
+          "Continuous marine limestone precipitation",
+          "The permanent extinction of land vegetation"
+        ],
+        correct: 0,
+        explanation: "Siwalik soil isotopic records document a major ecological shift around 8 to 7 million years ago, where C3 forests were widely replaced by C4 savanna grasslands due to strengthening monsoonal circulation."
+      },
+      {
+        q: "Which fossil group serves as the primary biostratigraphic index for dating the Paleocene-Eocene shelf limestones (such as the Kirthar and Sylhet groups) in Sind and Assam?",
+        options: [
+          "Glossopteris leaf impressions",
+          "Benthic larger foraminifera such as *Nummulites* and *Assilina*",
+          "Cambrian trilobites",
+          "Late Cretaceous ammonoids"
+        ],
+        correct: 1,
+        explanation: "Larger benthic foraminfera like *Nummulites* and *Assilina* are prolific in Eocene shelf limestones across Sind and Assam, providing high-resolution biostratigraphic zonation."
+      }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+    let isStepByStep = true;
+    const userAnswers = new Array(quizData.length).fill(null);
+    const lockedStatus = new Array(quizData.length).fill(false);
+
+    const workspace = document.getElementById('quiz-workspace');
+    const scoreCounter = document.getElementById('score-counter');
+    const pillsContainer = document.getElementById('pills-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const tabStep = document.getElementById('tab-step');
+    const tabAll = document.getElementById('tab-all');
+    const saveBtn = document.getElementById('save-btn');
+    const stepFooter = document.getElementById('step-footer');
+
+    const letters = ['A', 'B', 'C', 'D'];
+
+    function initQuiz() {
+      renderPills();
+      renderContent();
+      updateHeader();
+    }
+
+    function renderPills() {
+      pillsContainer.innerHTML = '';
+      quizData.forEach((_, idx) => {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'q-pill';
+        pill.textContent = idx + 1;
+
+        if (isStepByStep && idx === currentIdx) {
+          pill.classList.add('active');
+        }
+
+        if (userAnswers[idx] !== null) {
+          if (userAnswers[idx] === quizData[idx].correct) {
+            pill.classList.add('answered-correct');
+          } else {
+            pill.classList.add('answered-wrong');
+          }
+        }
+
+        pill.addEventListener('click', () => {
+          isStepByStep = true;
+          tabStep.classList.add('active');
+          tabAll.classList.remove('active');
+          currentIdx = idx;
+          renderPills();
+          renderContent();
+        });
+
+        pillsContainer.appendChild(pill);
+      });
+    }
+
+    function renderContent() {
+      workspace.innerHTML = '';
+
+      if (isStepByStep) {
+        stepFooter.style.display = 'flex';
+        prevBtn.disabled = currentIdx === 0;
+        nextBtn.disabled = currentIdx === quizData.length - 1;
+
+        workspace.appendChild(createQuestionCard(currentIdx));
+      } else {
+        stepFooter.style.display = 'none';
+        quizData.forEach((_, idx) => {
+          workspace.appendChild(createQuestionCard(idx));
+        });
+      }
+    }
+
+    function createQuestionCard(qIndex) {
+      const item = quizData[qIndex];
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const meta = document.createElement('div');
+      meta.className = 'q-meta';
+      meta.textContent = `Question ${qIndex + 1} of ${quizData.length}`;
+
+      const title = document.createElement('div');
+      title.className = 'q-title';
+      title.textContent = item.q;
+
+      const optionsList = document.createElement('div');
+      optionsList.className = 'options-list';
+
+      const expBox = document.createElement('div');
+      expBox.className = 'explanation-box';
+      expBox.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
+
+      if (lockedStatus[qIndex]) {
+        expBox.classList.add('visible');
+      }
+
+      item.options.forEach((optText, optIndex) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option-btn';
+
+        const badge = document.createElement('span');
+        badge.className = 'letter-badge';
+        badge.textContent = letters[optIndex];
+
+        const textSpan = document.createElement('span');
+        textSpan.textContent = optText;
+
+        btn.appendChild(badge);
+        btn.appendChild(textSpan);
+
+        if (lockedStatus[qIndex]) {
+          btn.disabled = true;
+          if (optIndex === item.correct) {
+            btn.classList.add('correct');
+          } else if (userAnswers[qIndex] === optIndex) {
+            btn.classList.add('wrong');
+          }
+        }
+
+        btn.addEventListener('click', () => {
+          if (lockedStatus[qIndex]) return;
+
+          lockedStatus[qIndex] = true;
+          userAnswers[qIndex] = optIndex;
+
+          const allBtns = optionsList.querySelectorAll('.option-btn');
+          allBtns.forEach(b => b.disabled = true);
+
+          if (optIndex === item.correct) {
+            btn.classList.add('correct');
+            score++;
+          } else {
+            btn.classList.add('wrong');
+            allBtns[item.correct].classList.add('correct');
+          }
+
+          expBox.classList.add('visible');
+          updateHeader();
+          renderPills();
+        });
+
+        optionsList.appendChild(btn);
+      });
+
+      card.appendChild(meta);
+      card.appendChild(title);
+      card.appendChild(optionsList);
+      card.appendChild(expBox);
+
+      return card;
+    }
+
+    function updateHeader() {
+      scoreCounter.textContent = `Score: ${score} / ${quizData.length}`;
+    }
+
+    tabStep.addEventListener('click', () => {
+      isStepByStep = true;
+      tabStep.classList.add('active');
+      tabAll.classList.remove('active');
+      renderPills();
+      renderContent();
+    });
+
+    tabAll.addEventListener('click', () => {
+      isStepByStep = false;
+      tabAll.classList.add('active');
+      tabStep.classList.remove('active');
+      renderPills();
+      renderContent();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderPills();
+        renderContent();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIdx < quizData.length - 1) {
+        currentIdx++;
+        renderPills();
+        renderContent();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      score = 0;
+      currentIdx = 0;
+      userAnswers.fill(null);
+      lockedStatus.fill(false);
+      isStepByStep = true;
+      tabStep.classList.add('active');
+      tabAll.classList.remove('active');
+      initQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    saveBtn.addEventListener('click', () => {
+      saveBtn.textContent = '✅ Saved';
+      setTimeout(() => {
+        saveBtn.textContent = '🔖 Save';
+      }, 1500);
+    });
+
+    initQuiz();
+  </script>
+</body>
+</html>
