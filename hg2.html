@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HG2 — Hydrogeology Quiz</title>
+<style>
+:root{--bg:#f3f7fb;--card:#fff;--ink:#172b4d;--muted:#607089;--blue:#1769aa;--blue2:#e6f2ff;--green:#18794e;--red:#b42318;--line:#d9e3ef}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(150deg,#e7f4ff,#f8fbff 55%,#eaf7f3);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);min-height:100vh;padding:20px}
+main{max-width:760px;margin:0 auto}
+header{padding:22px 4px 12px}
+.eyebrow{color:var(--blue);font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{margin:6px 0;font-size:clamp(1.8rem,5vw,2.5rem)}
+.sub{color:var(--muted);margin:0;line-height:1.5}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,28px);box-shadow:0 12px 32px #17365d0d;margin:16px 0}
+.topline{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.9rem;flex-wrap:wrap}
+.track{height:7px;background:#e8eef5;border-radius:10px;overflow:hidden;margin:12px 0 24px}
+.fill{height:100%;width:0;background:var(--blue);transition:width .2s}
+h2{font-size:1.15rem;line-height:1.55;margin:0 0 18px}
+.answers{display:grid;gap:10px}
+.answer{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;text-align:left;color:var(--ink);font:inherit;transition:.15s}
+.answer:hover{border-color:var(--blue);background:#f8fbff}
+.answer .letter{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:8px;background:#eef3f8;font-weight:800;font-size:.85rem}
+.answer.selected{border-color:var(--blue);background:var(--blue2)}
+.answer.correct{border-color:#64b58c;background:#edfbf3}
+.answer.wrong{border-color:#e59b96;background:#fff1f0}
+.answer:disabled{cursor:default}
+.feedback{margin-top:16px;padding:14px;border-radius:12px;line-height:1.5;display:none}
+.feedback.show{display:block}
+.feedback.good{background:#edfbf3;color:#145c3d}
+.feedback.bad{background:#fff1f0;color:#8f2119}
+.actions{display:flex;gap:10px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}
+button.primary,button.secondary{border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:750;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.primary:disabled{opacity:.45;cursor:not-allowed}
+.secondary{background:#eef3f8;color:var(--ink)}
+.note{font-size:.86rem;color:var(--muted);line-height:1.5}
+.result{text-align:center}
+.score{font-size:3rem;font-weight:850;color:var(--blue);margin:6px}
+.hidden{display:none!important}
+@media(max-width:480px){body{padding:12px}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Applied Geology • Practice Quiz</div>
+<h1>Hydrogeology <span style="color:#1769aa">HG2</span></h1>
+<p class="sub">A randomized 10-question quiz on aquifers, groundwater flow, wells, and water quality.</p>
+</header>
+<section class="panel" id="quizPanel">
+<div class="topline"><span id="progressText">Question 1 of 10</span><span id="scoreText">Score: 0</span></div>
+<div class="track"><div class="fill" id="progressFill"></div></div>
+<h2 id="questionText"></h2>
+<div class="answers" id="answers"></div>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="actions">
+<button class="secondary" id="restartBtn" type="button">Restart / Shuffle</button>
+<button class="primary" id="nextBtn" type="button" disabled>Check answer</button>
+</div>
+</section>
+<section class="panel result hidden" id="resultPanel">
+<div class="eyebrow">Quiz complete</div>
+<h1>Your result</h1>
+<div class="score" id="finalScore">0/10</div>
+<p id="resultMessage"></p>
+<p class="note">Use Restart / Shuffle to try a newly randomized question set and answer order.</p>
+<button class="primary" id="againBtn" type="button">Try again</button>
+</section>
+<p class="note">Educational practice only. Select an answer, then check it to see an explanation. Question and option order are shuffled each time.</p>
+</main>
+<script>
+const bank = [
+{q:"Which property of a rock or sediment most directly describes its ability to transmit groundwater?",o:["Porosity","Permeability","Specific retention","Bulk density"],a:1,e:"Permeability describes how readily interconnected pore spaces or fractures transmit fluid."},
+{q:"An unconfined aquifer has its upper boundary at the:",o:["Top of an impermeable bed","Water table","Potentiometric surface above ground","Base of the confining layer"],a:1,e:"The water table is the upper saturated boundary of an unconfined aquifer."},
+{q:"Darcy’s law for one-dimensional flow through a saturated porous medium is commonly written as:",o:["Q = K i A","Q = K A / i","Q = i / (K A)","Q = K + i + A"],a:0,e:"Darcy’s law is Q = K i A, where K is hydraulic conductivity, i is hydraulic gradient, and A is cross-sectional area."},
+{q:"A water level falls by 4 m in a well after pumping. The 4 m change is called:",o:["Drawdown","Recharge","Specific yield","Transmissivity"],a:0,e:"Drawdown is the decline in water level caused by pumping, measured relative to the initial level."},
+{q:"Which material generally has the greatest primary porosity among these choices?",o:["Well-cemented sandstone","Unfractured granite","Well-sorted unconsolidated sand","Massive basalt"],a:2,e:"Well-sorted unconsolidated sand commonly has substantial intergranular pore space; actual values depend on packing and sediment history."},
+{q:"Hydraulic gradient is calculated as:",o:["Distance divided by head difference","Head difference divided by flow-path length","Discharge divided by aquifer thickness","Porosity divided by permeability"],a:1,e:"Hydraulic gradient i is the head difference divided by the distance along the flow path."},
+{q:"Which test is commonly used to estimate aquifer hydraulic properties by measuring water-level response during pumping?",o:["Sieve analysis","Pumping test","Slake durability test","Schmidt hammer test"],a:1,e:"A pumping test measures discharge and drawdown over time in pumping and/or observation wells to estimate aquifer properties."},
+{q:"Specific yield is the:",o:["Fraction of water that drains by gravity from saturated material","Total volume of all pore spaces per unit volume","Rate of groundwater flow through a unit area","Depth from ground surface to the water table"],a:0,e:"Specific yield is the fraction of a saturated material’s bulk volume that drains under gravity; it is usually less than total porosity."},
+{q:"Which process is a major natural source of groundwater recharge in many aquifers?",o:["Evaporation from lakes","Infiltration of precipitation","Pumping from wells","Discharge to springs"],a:1,e:"Some precipitation infiltrates the ground and percolates downward to recharge aquifers."},
+{q:"A confined aquifer is one that is:",o:["Unsaturated throughout","Bounded by low-permeability confining layers and under pressure","Always exposed at the land surface","Made only of clay"],a:1,e:"A confined aquifer is bounded by confining layers and its groundwater is generally under pressure above atmospheric pressure."},
+{q:"Transmissivity is equal to hydraulic conductivity multiplied by:",o:["Aquifer saturated thickness","Hydraulic gradient","Porosity","Well radius"],a:0,e:"For a reasonably uniform aquifer, transmissivity T = Kb, where b is saturated aquifer thickness."},
+{q:"Which instrument is commonly used to measure groundwater level in a monitoring well?",o:["pH electrode only","Electric water-level meter","Barometer only","Current meter for rivers"],a:1,e:"An electric water-level meter detects contact with water and measures depth to the water surface."},
+{q:"A cone of depression forms around a pumping well because:",o:["Groundwater head declines toward the well","Porosity becomes zero around the well","The aquifer instantly becomes impermeable","Recharge always stops completely"],a:0,e:"Pumping lowers hydraulic head near the well, creating a cone-shaped drawdown pattern in many aquifers."},
+{q:"Which parameter indicates the acidity or alkalinity of groundwater?",o:["Turbidity","pH","Transmissivity","Specific yield"],a:1,e:"pH describes how acidic or alkaline water is."},
+{q:"A high total dissolved solids (TDS) value primarily indicates:",o:["A high concentration of dissolved substances","High groundwater velocity in every case","A high water-table elevation","Zero hardness"],a:0,e:"TDS estimates the combined concentration of dissolved substances; it does not directly measure groundwater velocity."},
+{q:"Which boundary condition is most associated with a river that maintains a nearly fixed groundwater head where it contacts an aquifer?",o:["Constant-head boundary","No-flow boundary","Impermeable boundary everywhere","Recharge-free boundary"],a:0,e:"A hydraulically connected river can approximate a constant-head boundary when river stage remains nearly fixed."},
+{q:"In groundwater flow, hydraulic head combines elevation head and:",o:["Pressure head","Temperature head","Salinity head","Grain-size head"],a:0,e:"Total hydraulic head is the sum of elevation head and pressure head (with velocity head generally negligible in porous aquifers)."},
+{q:"Which condition most strongly favors groundwater movement through a rock mass with low matrix permeability?",o:["Well-connected open fractures","Complete cementation of all pores","Absence of hydraulic gradient","A sealed confining layer with no openings"],a:0,e:"Open, connected fractures can provide important secondary permeability even where the rock matrix transmits little water."},
+{q:"A water sample has a pH of 5.5. It is best described as:",o:["Acidic","Neutral","Alkaline","Impossible for natural water"],a:0,e:"A pH below 7 is acidic under the usual aqueous pH scale at standard reference conditions."},
+{q:"Which method is most directly used to show groundwater flow directions from water-level measurements?",o:["Contour map of hydraulic head","Geological age map alone","Soil color chart","Grain-size histogram alone"],a:0,e:"A potentiometric-surface or water-table contour map uses measured heads; groundwater generally flows from higher head toward lower head."}
+];
+let questions=[],index=0,score=0,chosen=null,locked=false;
+const $=id=>document.getElementById(id);
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function start(){
+ questions=shuffle([...bank]).slice(0,10).map(item=>{const opts=item.o.map((label,i)=>({label,correct:i===item.a}));shuffle(opts);return {...item,opts};});
+ index=0;score=0;chosen=null;locked=false;
+ $("quizPanel").classList.remove("hidden");$("resultPanel").classList.add("hidden");render();
+}
+function render(){
+ const item=questions[index];chosen=null;locked=false;
+ $("progressText").textContent=`Question ${index+1} of ${questions.length}`;
+ $("scoreText").textContent=`Score: ${score}`;
+ $("progressFill").style.width=`${index/questions.length*100}%`;
+ $("questionText").textContent=item.q;
+ $("answers").innerHTML="";
+ item.opts.forEach((opt,i)=>{const b=document.createElement("button");b.type="button";b.className="answer";b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span><span>${opt.label}</span>`;b.addEventListener("click",()=>select(i));$("answers").appendChild(b);});
+ $("feedback").className="feedback";$("feedback").textContent="";
+ $("nextBtn").disabled=true;$("nextBtn").textContent="Check answer";
+}
+function select(i){if(locked)return;chosen=i;[...$("answers").children].forEach((b,j)=>b.classList.toggle("selected",j===i));$("nextBtn").disabled=false;}
+function check(){
+ if(chosen===null||locked)return;
+ locked=true;const item=questions[index],right=item.opts[chosen].correct;
+ if(right)score++;
+ [...$("answers").children].forEach((b,i)=>{b.disabled=true;if(item.opts[i].correct)b.classList.add("correct");else if(i===chosen)b.classList.add("wrong");});
+ const fb=$("feedback");fb.className="feedback show "+(right?"good":"bad");fb.textContent=(right?"Correct. ":"Not quite. ")+item.e;
+ $("scoreText").textContent=`Score: ${score}`;
+ $("nextBtn").textContent=index===questions.length-1?"See result":"Next question";
+}
+function next(){
+ if(!locked){check();return;}
+ if(index<questions.length-1){index++;render();}else finish();
+}
+function finish(){
+ $("quizPanel").classList.add("hidden");$("resultPanel").classList.remove("hidden");
+ $("finalScore").textContent=`${score}/${questions.length}`;
+ const pct=score/questions.length;
+ $("resultMessage").textContent=pct>=.8?"Excellent work! Your hydrogeology fundamentals are looking strong.":pct>=.5?"Good effort. Review the explanations and try another shuffled set.":"Keep practicing—review the explanations, then try a fresh set.";
+ $("progressFill").style.width="100%";
+}
+$("nextBtn").addEventListener("click",next);
+$("restartBtn").addEventListener("click",start);
+$("againBtn").addEventListener("click",start);
+start();
+</script>
+</body>
+</html>
