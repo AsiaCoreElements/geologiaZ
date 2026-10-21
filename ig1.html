@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igneous Petrology</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#15171A; --muted:#64748B; --line:#E2E8F0; --accent:#C25E00;
+  --green:#059669; --red:#DC2626;
+}
+* { box-sizing:border-box; }
+body { background:#F8FAFC; color:#15171A; margin:0; padding:12px; font-family:'DM Sans',sans-serif; }
+.main { max-width:780px; margin:0 auto; background:#FFFFFF; border:2px solid #E2E8F0; border-radius:20px; padding:16px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05); }
+h1,h2,.q-title { font-family:'Tajawal',sans-serif; font-weight:800; color:#15171A; }
+h1 { font-size:25px; margin:0 0 4px; }
+.subtitle { color:#64748B; font-size:12px; margin-bottom:16px; }
+.toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.tabs { display:flex; gap:4px; padding:4px; background:#F1F5F9; border-radius:11px; }
+.tab { border:0; border-radius:8px; padding:8px 11px; font:600 12px 'DM Sans',sans-serif; color:#475569; background:transparent; cursor:pointer; }
+.tab.active { background:#FFFFFF; color:#15171A; box-shadow:0 1px 3px #00000012; }
+.score { font-size:13px; font-weight:700; white-space:nowrap; }
+.reset { border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; border-radius:9px; padding:7px 10px; font-weight:700; font-size:12px; cursor:pointer; }
+.pillbar { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.pills { display:flex; align-items:center; gap:6px; overflow-x:auto; padding:3px 1px 7px; flex:1; scrollbar-width:thin; }
+.pill { width:31px; height:31px; flex:0 0 31px; border-radius:50%; background:#F1F5F9; color:#15171A; border:1px solid #CBD5E1; font:700 12px 'DM Sans',sans-serif; cursor:pointer; }
+.pill.active { background:#C25E00; color:#FFFFFF; font-weight:700; border-color:#C25E00; }
+.pill.correct { background:#ECFDF5; border-color:#059669; color:#065F46; }
+.pill.wrong { background:#FEF2F2; border-color:#DC2626; color:#991B1B; }
+.save { display:flex; align-items:center; gap:6px; border:1px solid #CBD5E1; background:#FFFFFF; border-radius:10px; padding:7px 10px; font-size:12px; font-weight:700; cursor:pointer; color:#334155; flex-shrink:0; }
+.save.saved { color:#92400E; background:#FFF7ED; border-color:#FDBA74; }
+.save svg { width:15px; height:15px; }
+.question-card { border:1px solid #E2E8F0; border-radius:16px; padding:15px; background:#FFFFFF; }
+.q-meta { color:#64748B; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin-bottom:8px; }
+.q-title { font-size:19px; line-height:1.35; margin:0 0 14px; }
+.options { display:grid; gap:9px; }
+.option { background:#FFFFFF; border:2px solid #E2E8F0; border-bottom-width:3px; border-radius:12px; padding:10px 12px; font-size:13px; font-weight:500; color:#15171A; cursor:pointer; text-align:left; display:flex; align-items:center; gap:10px; width:100%; transition:background .15s,border-color .15s; }
+.option:hover:not(:disabled) { border-color:#C25E00; background:#FFF7ED; }
+.option:disabled { cursor:default; }
+.option.correct { background:#ECFDF5; border-color:#059669; color:#065F46; font-weight:700; }
+.option.wrong { background:#FEF2F2; border-color:#DC2626; color:#991B1B; font-weight:600; }
+.letter { width:26px; height:26px; border-radius:8px; background:#F1F5F9; font-weight:800; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; font-size:12px; color:#334155; }
+.option.correct .letter { background:#D1FAE5; color:#065F46; }
+.option.wrong .letter { background:#FEE2E2; color:#991B1B; }
+.explanation { background:#F0F9FF; border:1px solid #BAE6FD; color:#0C4A6E; border-radius:10px; padding:10px 12px; font-size:12px; margin-top:10px; line-height:1.55; }
+.nav { display:flex; justify-content:space-between; gap:10px; margin-top:14px; }
+.nav button { border-radius:10px; padding:8px 14px; font-weight:700; border:1px solid #CBD5E1; cursor:pointer; font-size:12px; background:#FFFFFF; color:#334155; }
+.nav .primary { background:#C25E00; color:#FFFFFF; border-color:#C25E00; }
+.nav button:disabled { opacity:.4; cursor:not-allowed; }
+.all-item { margin-bottom:14px; }
+.hidden { display:none !important; }
+.progress-line { height:5px; background:#F1F5F9; border-radius:20px; overflow:hidden; margin:0 0 14px; }
+.progress-fill { height:100%; width:0; background:#C25E00; transition:width .2s; }
+.result { margin-top:14px; padding:12px; border-radius:12px; background:#FFF7ED; border:1px solid #FED7AA; font-size:13px; }
+@media (max-width:480px) {
+ body { padding:8px; } .main { padding:12px; border-radius:16px; }
+ .toolbar { justify-content:flex-start; } .score { margin-left:auto; }
+ .q-title { font-size:18px; } .question-card { padding:12px; }
+}
+</style>
+</head>
+<body>
+<main class="main">
+  <header>
+    <h1>Igneous Petrology</h1>
+    <div class="subtitle">GeologiaZ · Interactive Earth Sciences Quiz · 15 questions</div>
+  </header>
+  <div class="toolbar">
+    <div class="tabs" role="tablist" aria-label="Quiz layout">
+      <button class="tab active" id="stepTab" type="button">Step-by-Step</button>
+      <button class="tab" id="allTab" type="button">All</button>
+    </div>
+    <div class="score" id="score" aria-live="polite">Score: 0 / 15</div>
+    <button class="reset" id="reset" type="button">Reset</button>
+  </div>
+  <div class="progress-line"><div class="progress-fill" id="progress"></div></div>
+  <div id="stepView">
+    <div class="pillbar">
+      <div class="pills" id="pills" aria-label="Question navigation"></div>
+      <button class="save" id="save" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-5-7 5V4a1 1 0 0 1 1-1z"/></svg>
+        <span id="saveText">Save</span>
+      </button>
+    </div>
+    <div id="activeQuestion"></div>
+  </div>
+  <div id="allView" class="hidden"></div>
+  <div id="result" class="result hidden" aria-live="polite"></div>
+</main>
+<script>
+const QUESTIONS = [{"q": "Which mineral assemblage is most characteristic of a typical basalt?", "opts": ["Quartz + muscovite + K-feldspar", "Olivine + pyroxene + calcic plagioclase", "Garnet + kyanite + sillimanite", "Albite + orthoclase + muscovite"], "ans": 1, "exp": "Basalt is a mafic volcanic rock commonly containing calcic plagioclase and pyroxene, with olivine frequent in many varieties."}, {"q": "Bowen’s discontinuous reaction series describes the crystallization sequence of which minerals?", "opts": ["K-feldspar → olivine → pyroxene → quartz", "Plagioclase → quartz → olivine → amphibole", "Olivine → pyroxene → amphibole → biotite", "Quartz → muscovite → biotite → olivine"], "ans": 2, "exp": "In the discontinuous series, ferromagnesian minerals change structure as cooling proceeds: olivine, pyroxene, amphibole, then biotite."}, {"q": "Which process most directly produces a cumulate texture in an igneous intrusion?", "opts": ["Regional metamorphic recrystallization", "Accumulation of crystals separated from melt", "Rapid quenching of a lava flow", "Compaction of sediment during burial"], "ans": 1, "exp": "Cumulate rocks form when crystals accumulate, commonly by settling, floating, or flow sorting, and become concentrated relative to the remaining melt."}, {"q": "A rock with a glassy texture most strongly indicates:", "opts": ["Very rapid cooling that inhibited crystal growth", "High-grade metamorphism", "Slow cooling deep in the crust", "Complete equilibrium crystallization"], "ans": 0, "exp": "Volcanic glass forms when melt cools so rapidly that atoms cannot organize into an ordered crystalline structure."}, {"q": "Which chemical component generally increases from basaltic to rhyolitic magma?", "opts": ["SiO₂", "MgO", "CaO", "FeO"], "ans": 0, "exp": "Rhyolitic magma is felsic and silica-rich, whereas basaltic magma is mafic and relatively enriched in Fe, Mg, and Ca."}, {"q": "In a Bowen’s continuous reaction series, which mineral group changes composition continuously during cooling?", "opts": ["Quartz", "Amphibole", "Olivine", "Plagioclase feldspar"], "ans": 3, "exp": "Plagioclase evolves from relatively Ca-rich compositions (anorthite) toward Na-rich compositions (albite) as temperature decreases."}, {"q": "Which intrusive igneous rock is the coarse-grained equivalent of basalt?", "opts": ["Granite", "Rhyolite", "Gabbro", "Diorite"], "ans": 2, "exp": "Gabbro and basalt are both mafic in composition; gabbro crystallizes slowly at depth and is coarse-grained, while basalt is extrusive and fine-grained."}, {"q": "What is the principal significance of a porphyritic texture?", "opts": ["It proves the rock is sedimentary", "It uniquely identifies a felsic composition", "It indicates the magma contained no crystals", "It records two or more stages/rates of cooling"], "ans": 3, "exp": "Large phenocrysts set in a finer groundmass commonly indicate early crystal growth followed by faster cooling or eruption."}, {"q": "Which statement best describes fractional crystallization?", "opts": ["Early-formed crystals are removed from, or isolated from, the residual melt", "Magma changes only through assimilation of country rock", "All crystals remain in equilibrium with the melt throughout cooling", "A magma solidifies instantly without crystal growth"], "ans": 0, "exp": "Separating early crystals from melt changes the residual liquid composition, commonly enriching it in components not strongly incorporated into those crystals."}, {"q": "Which mineral is commonly used as an index of high-temperature crystallization in mafic magmas?", "opts": ["Olivine", "Kyanite", "Muscovite", "Sillimanite"], "ans": 0, "exp": "Olivine commonly crystallizes early at relatively high temperatures in mafic magmas, although its stability depends on melt composition and pressure."}, {"q": "A pegmatitic texture is typically characterized by:", "opts": ["Exceptionally large crystals, often in late-stage felsic bodies", "A fine-grained matrix with volcanic glass only", "Microscopic crystals formed by quenching", "Rounded clasts cemented together"], "ans": 0, "exp": "Pegmatites commonly contain very coarse crystals and are associated with volatile-rich residual melts, often late in the evolution of granitic systems."}, {"q": "Which pair correctly matches an extrusive rock with its intrusive equivalent?", "opts": ["Basalt — granite", "Andesite — peridotite", "Obsidian — gabbro", "Rhyolite — granite"], "ans": 3, "exp": "Rhyolite and granite are felsic compositional equivalents; rhyolite is volcanic and fine-grained, while granite is plutonic and coarse-grained."}, {"q": "What does the term ‘euhedral’ mean when describing an igneous crystal?", "opts": ["The crystal is partly melted", "The crystal is bounded by well-formed crystal faces", "The crystal has no visible boundaries", "The crystal is made only of glass"], "ans": 1, "exp": "Euhedral crystals display crystal faces developed in a relatively unobstructed growth environment; anhedral grains lack well-formed faces."}, {"q": "Which magma type is generally most viscous, all else being equal?", "opts": ["Basaltic", "Komatiitic", "Rhyolitic", "Picritic"], "ans": 2, "exp": "High silica content promotes polymerization of the melt structure, generally increasing viscosity; rhyolitic magma is therefore commonly much more viscous than basaltic magma."}, {"q": "In the QAPF classification of plutonic rocks, what do Q, A, P and F represent?", "opts": ["Quaternary minerals, alkalis, pyroxenes, ferromagnesian minerals", "Quartz, apatite, plagioclase, fluorite", "Quartz, amphibole, pyroxene, feldspar", "Quartz, alkali feldspar, plagioclase, feldspathoids"], "ans": 3, "exp": "QAPF uses modal proportions of quartz (Q), alkali feldspar (A), plagioclase (P), and feldspathoids (F), with Q and F not occurring together in the same classification field."}];
+const LETTERS = ['A','B','C','D'];
+let current = 0;
+let answers = Array(QUESTIONS.length).fill(null);
+let saved = Array(QUESTIONS.length).fill(false);
+let mode = 'step';
+
+const $ = id => document.getElementById(id);
+function scoreCount() { return answers.reduce((sum, a, i) => sum + (a === QUESTIONS[i].ans ? 1 : 0), 0); }
+function answeredCount() { return answers.filter(a => a !== null).length; }
+function updateStats() {
+  $('score').textContent = `Score: ${scoreCount()} / ${QUESTIONS.length}`;
+  $('progress').style.width = `${answeredCount()/QUESTIONS.length*100}%`;
+  const result = $('result');
+  if (answeredCount() === QUESTIONS.length) {
+    result.classList.remove('hidden');
+    result.innerHTML = `<strong>Quiz complete!</strong> You scored ${scoreCount()} out of ${QUESTIONS.length} (${Math.round(scoreCount()/QUESTIONS.length*100)}%).`;
+  } else result.classList.add('hidden');
+}
+function makePills() {
+  $('pills').innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'pill' + (i === current ? ' active' : '') + (answers[i] !== null ? (answers[i] === q.ans ? ' correct' : ' wrong') : '');
+    b.textContent = i + 1; b.setAttribute('aria-label', `Question ${i+1}${saved[i] ? ', saved' : ''}`);
+    b.addEventListener('click', () => { current = i; renderStep(); });
+    $('pills').appendChild(b);
+  });
+  $('save').classList.toggle('saved', saved[current]);
+  $('save').setAttribute('aria-pressed', String(saved[current]));
+  $('saveText').textContent = saved[current] ? 'Saved' : 'Save';
+}
+function renderCard(i, container, includeNav) {
+  const q = QUESTIONS[i], chosen = answers[i];
+  const card = document.createElement('section');
+  card.className = 'question-card';
+  const meta = document.createElement('div'); meta.className = 'q-meta'; meta.textContent = `Question ${i+1} of ${QUESTIONS.length}`;
+  const title = document.createElement('h2'); title.className = 'q-title'; title.textContent = q.q;
+  const opts = document.createElement('div'); opts.className = 'options';
+  q.opts.forEach((option, oi) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'option';
+    if (chosen !== null && oi === q.ans) b.classList.add('correct');
+    if (chosen !== null && oi === chosen && chosen !== q.ans) b.classList.add('wrong');
+    b.disabled = chosen !== null;
+    const letter = document.createElement('span'); letter.className = 'letter'; letter.textContent = LETTERS[oi];
+    const text = document.createElement('span'); text.textContent = option;
+    b.append(letter, text);
+    b.addEventListener('click', () => {
+      if (answers[i] !== null) return;
+      answers[i] = oi;
+      if (mode === 'step') renderStep(); else renderAll();
+      updateStats();
+    });
+    opts.appendChild(b);
+  });
+  card.append(meta, title, opts);
+  if (chosen !== null) {
+    const exp = document.createElement('div'); exp.className = 'explanation';
+    const strong = document.createElement('strong'); strong.textContent = 'Explanation: ';
+    exp.append(strong, document.createTextNode(q.exp)); card.appendChild(exp);
+  }
+  if (includeNav) {
+    const nav = document.createElement('div'); nav.className = 'nav';
+    const prev = document.createElement('button'); prev.type = 'button'; prev.textContent = '< Prev'; prev.disabled = i === 0;
+    prev.addEventListener('click', () => { current = Math.max(0, current - 1); renderStep(); });
+    const next = document.createElement('button'); next.type = 'button'; next.className = 'primary'; next.textContent = 'Next >'; next.disabled = i === QUESTIONS.length - 1;
+    next.addEventListener('click', () => { current = Math.min(QUESTIONS.length - 1, current + 1); renderStep(); });
+    nav.append(prev, next); card.appendChild(nav);
+  }
+  container.appendChild(card);
+}
+function renderStep() {
+  mode = 'step';
+  $('stepView').classList.remove('hidden'); $('allView').classList.add('hidden');
+  $('stepTab').classList.add('active'); $('allTab').classList.remove('active');
+  makePills(); $('activeQuestion').innerHTML = ''; renderCard(current, $('activeQuestion'), true); updateStats();
+}
+function renderAll() {
+  mode = 'all';
+  $('stepView').classList.add('hidden'); $('allView').classList.remove('hidden');
+  $('allTab').classList.add('active'); $('stepTab').classList.remove('active');
+  $('allView').innerHTML = '';
+  QUESTIONS.forEach((q, i) => { const wrap = document.createElement('div'); wrap.className = 'all-item'; renderCard(i, wrap, false); $('allView').appendChild(wrap); });
+  updateStats();
+}
+$('stepTab').addEventListener('click', renderStep);
+$('allTab').addEventListener('click', renderAll);
+$('save').addEventListener('click', () => { saved[current] = !saved[current]; makePills(); });
+$('reset').addEventListener('click', () => {
+  answers = Array(QUESTIONS.length).fill(null); saved = Array(QUESTIONS.length).fill(false); current = 0;
+  if (mode === 'all') renderAll(); else renderStep();
+});
+renderStep();
+</script>
+</body>
+</html>
