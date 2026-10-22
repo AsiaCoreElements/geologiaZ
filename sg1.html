@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structural Geology</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tajawal:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#15171A;--muted:#64748B;--line:#E2E8F0;--soft:#F8FAFC;--blue:#0284C7;--orange:#C2410C}
+*{box-sizing:border-box}
+body{margin:0;padding:20px 24px;background:#FFFFFF;color:var(--ink);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid #F1F5F9;margin-bottom:20px}
+.segmented{display:inline-flex;gap:4px;padding:4px;background:#F1F5F9;border-radius:12px}
+.mode-btn{height:32px;padding:0 12px;font-size:12px;font-weight:700;border-radius:8px;border:none;cursor:pointer}
+.mode-btn.active{background:#FFF;color:#15171A;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.mode-btn:not(.active){background:transparent;color:#64748B}
+.toolbar-right{display:flex;align-items:center;gap:12px}
+.score{font-size:12px;font-weight:700;color:#15171A;font-variant-numeric:tabular-nums;white-space:nowrap}
+.reset{height:32px;padding:0 12px;font-size:12px;font-weight:700;color:#475569;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+.step-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.steps{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;max-width:calc(100% - 96px);scrollbar-width:thin}
+.step{width:40px;height:40px;border-radius:16px;border:2px solid #E2E8F0;background:#F8FAFC;color:#475569;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0}
+.step.correct{background:#ECFDF5;color:#065F46;border-color:#059669}
+.step.wrong{background:#FEF2F2;color:#991B1B;border-color:#DC2626}
+.step.active{background:#C2410C;color:#FFF;border-color:transparent}
+.save{height:36px;padding:0 12px;border-radius:12px;border:1px solid #E2E8F0;background:#F8FAFC;color:#64748B;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;flex-shrink:0}
+.save.saved{background:#FEFCE8;border-color:#CA8A04;color:#A16207}
+.q-meta{font-size:12px;font-weight:700;color:#0284C7;margin-bottom:10px}
+.q-heading{font-family:'Tajawal',sans-serif;font-size:20px;font-weight:700;color:#15171A;line-height:1.35;margin:0 0 16px}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{width:100%;min-height:54px;text-align:left;padding:14px;font-size:14px;font-weight:500;border-radius:16px;background:#FFF;border:2px solid #E2E8F0;border-bottom-width:4px;color:#15171A;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s ease}
+.opt-btn:not(:disabled):hover{border-color:#0284C7}
+.opt-btn:not(:disabled):active{border-bottom-width:2px;transform:translateY(2px)}
+.keycap{width:32px;height:32px;border-radius:12px;font-size:12px;font-weight:800;background:#F1F5F9;color:#334155;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-btn.is-correct{background:#ECFDF5;border:2px solid #059669;border-bottom-width:4px;color:#065F46;font-weight:700}
+.opt-btn.is-correct .keycap{background:#059669;color:#FFF}
+.opt-btn.is-wrong{background:#FEF2F2;border:2px solid #DC2626;border-bottom-width:4px;color:#991B1B;font-weight:600}
+.opt-btn.is-wrong .keycap{background:#DC2626;color:#FFF}
+.opt-btn.is-muted{background:#F8FAFC;border:1px solid #E2E8F0;color:#94A3B8}
+.opt-btn.is-muted .keycap{background:#F1F5F9;color:#94A3B8}
+.explanation{margin-top:16px;padding:16px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:16px;font-size:13.5px;color:#0C4A6E;line-height:1.6}
+.bottom-nav{margin-top:20px;padding-top:16px;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-btn{height:44px;padding:0 16px;font-size:12px;font-weight:700;color:#15171A;background:#F1F5F9;border:none;border-radius:16px;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.nav-btn.next{padding:0 20px;color:#FFF;background:#C2410C}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.all-list{display:flex;flex-direction:column;gap:24px}
+.question-card{padding-bottom:20px;border-bottom:1px solid #F1F5F9}
+.question-card .q-meta{margin-top:0}
+.question-card .q-heading{margin-bottom:14px}
+.question-card .explanation{margin-top:12px}
+.result{margin-top:20px;padding:16px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;font-size:13px;line-height:1.6}
+[hidden]{display:none!important}
+@media(max-width:520px){body{padding:16px}.toolbar-right{width:100%;justify-content:space-between}.step-row{align-items:flex-start}.steps{gap:6px;max-width:calc(100% - 82px)}.step{width:36px;height:36px;border-radius:13px}.opt-btn{padding:12px;gap:11px}.q-heading{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <div class="segmented" role="group" aria-label="Quiz display mode">
+    <button class="mode-btn active" id="stepMode" type="button">Step-by-Step</button>
+    <button class="mode-btn" id="allMode" type="button">All Questions</button>
+  </div>
+  <div class="toolbar-right">
+    <div class="score" id="scoreText" aria-live="polite">Score: 0 / 15</div>
+    <button class="reset" id="resetBtn" type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset
+    </button>
+  </div>
+</div>
+<div id="stepView">
+  <div class="step-row">
+    <div class="steps" id="steps" aria-label="Question navigation"></div>
+    <button class="save" id="saveBtn" type="button" aria-pressed="false">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4z"/></svg><span>Save</span>
+    </button>
+  </div>
+  <main id="questionArea"></main>
+  <div class="bottom-nav">
+    <button class="nav-btn" id="prevBtn" type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Previous
+    </button>
+    <button class="nav-btn next" id="nextBtn" type="button">Next Question
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+</div>
+<div id="allView" hidden>
+  <div class="all-list" id="allList"></div>
+  <div class="result" id="resultBox" hidden></div>
+</div>
+<script>
+(() => {
+'use strict';
+const questions = [
+ {topic:'Stress and Strain',q:'In an ideal homogeneous, isotropic elastic material, which relationship connects shear modulus (G), Young’s modulus (E), and Poisson’s ratio (ν)?',opts:['E = G(1 + ν)','E = 2G(1 + ν)','E = 3G(1 − 2ν)','E = G/(1 + ν)'],a:1,exp:'For an isotropic linear-elastic solid, E = 2G(1 + ν). This relation links Young’s modulus, shear modulus, and Poisson’s ratio.'},
+ {topic:'Fault Mechanics',q:'A fault plane strikes north–south and dips 60° east. The eastern block has moved downward relative to the western block. What is the most direct classification?',opts:['Reverse fault','Left-lateral strike-slip fault','Normal fault','Thrust fault'],a:2,exp:'The hanging wall lies above the inclined fault plane. For an east-dipping plane, the eastern block is the hanging wall; its downward movement relative to the footwall defines a normal fault.'},
+ {topic:'Folds',q:'In a cylindrical fold, the hinge line is best described as the line that joins points of maximum curvature on successive folded surfaces.',opts:['True only for anticlines','A line parallel to the axial trace in every fold','A line joining points of maximum curvature on a folded surface','The intersection of bedding with the ground surface'],a:2,exp:'A fold hinge is the locus of maximum curvature on a folded surface. The hinge line connects hinge points; its orientation need not be parallel to the axial trace in every geometry.'},
+ {topic:'Stress Analysis',q:'In a conventional Andersonian normal-faulting stress regime, which principal stress is vertical?',opts:['σ₁, the maximum principal stress','σ₂, the intermediate principal stress','σ₃, the minimum principal stress','All three principal stresses are vertical'],a:0,exp:'In the ideal Andersonian normal-faulting regime, σ₁ is vertical and σ₃ is horizontal. The maximum compressive principal stress is commonly denoted σ₁.'},
+ {topic:'Stereographic Projection',q:'On a lower-hemisphere equal-area stereonet, a planar geological surface is represented by:',opts:['A single point only','A great circle (or its appropriate projected trace)','A small circle in all cases','A straight line through the centre of the printed net'],a:1,exp:'A plane through the projection sphere’s centre intersects the sphere in a great circle, which is plotted as a great-circle trace on a stereonet.'},
+ {topic:'Joints and Fractures',q:'Which observation most strongly supports identifying a fracture as a joint rather than a fault?',opts:['A measurable displacement of matching markers','A polished surface with consistent slickensides','A fracture with no discernible shear displacement','A breccia zone along the fracture'],a:2,exp:'A joint is a fracture with no appreciable displacement parallel to the fracture surface. Faults show displacement; slickensides and fault breccia commonly support fault-related movement.'},
+ {topic:'Fold Geometry',q:'A fold whose limbs dip away from the hinge zone is generally classified as a(n):',opts:['Syncline','Anticline','Monocline','Recumbent fold in every case'],a:1,exp:'An anticline is an arch-like fold with limbs dipping away from the hinge zone. Whether it is an anticline or syncline based strictly on geometry should be distinguished from younging-based stratigraphic terminology.'},
+ {topic:'Fault Displacement',q:'A fault with predominantly horizontal displacement parallel to its strike is classified as:',opts:['Dip-slip','Oblique-slip only','Strike-slip','Detachment fault by definition'],a:2,exp:'Strike-slip faults accommodate predominantly horizontal movement parallel to the fault strike. The sense of motion is described as right-lateral (dextral) or left-lateral (sinistral).'},
+ {topic:'Strain',q:'The finite strain ellipse is used to represent:',opts:['Only the orientation of the principal stresses','The deformation of an initially circular marker in a two-dimensional strain field','The age of a fold generation','The amount of erosion above a structure'],a:1,exp:'An initially circular marker becomes an ellipse under homogeneous two-dimensional strain. The ellipse’s axes indicate principal stretch directions and relative magnitudes.'},
+ {topic:'Brittle–Ductile Deformation',q:'Which factor generally favours ductile deformation in rocks, all else being equal?',opts:['Lower temperature and faster strain rate','Higher temperature and slower strain rate','Lower confining pressure and rapid loading','Shallow depth and low temperature only'],a:1,exp:'Higher temperature, higher confining pressure, and lower strain rate generally promote ductile behaviour, although mineralogy, fluids, and deformation mechanisms also matter.'},
+ {topic:'Fault Kinematics',q:'Slickenlines on a fault surface primarily indicate:',opts:['The direction of relative slip along the surface','The absolute age of the fault','The original bedding younging direction','The magnitude of vertical uplift by themselves'],a:0,exp:'Slickenlines are linear striations produced by movement on a fault surface and commonly indicate the slip direction. They do not, by themselves, determine slip sense or displacement magnitude.'},
+ {topic:'Unconformities and Structures',q:'An angular unconformity is most clearly recognized where:',opts:['Parallel sedimentary beds are separated by a time gap','Older strata are tilted or folded and truncated beneath younger strata at a different angle','A fault cuts two units without erosion','A dyke intrudes bedding at a high angle'],a:1,exp:'An angular unconformity records erosion or non-deposition after older strata were tilted or folded, followed by deposition of younger strata at a different orientation.'},
+ {topic:'Shear Zones',q:'In a ductile shear zone, S–C fabrics are commonly interpreted as indicators of:',opts:['Only metamorphic grade','Shear sense and progressive non-coaxial deformation','The absolute age of deformation without dating','A purely hydrostatic stress state'],a:1,exp:'S–C fabrics combine S-surfaces (foliation/oblique fabric) and C-surfaces (shear bands). Their geometry can indicate shear sense in many ductile shear zones, when interpreted in context.'},
+ {topic:'Bedding and Cleavage',q:'A cleavage that consistently intersects bedding at an angle and is axial-planar to folds is most commonly:',opts:['Primary cross-bedding','Axial-planar cleavage associated with folding','A joint set unrelated to deformation by definition','A depositional contact'],a:1,exp:'Axial-planar cleavage commonly develops approximately parallel to fold axial surfaces and cuts bedding at an angle, recording a penetrative deformation fabric.'},
+ {topic:'Structural Interpretation',q:'On a geological map, a V-shaped outcrop pattern where a bed crosses a valley is controlled most directly by:',opts:['Only the rock’s mineral composition','The bed’s dip direction and angle, together with valley topography','The magnetic declination alone','The age of the map'],a:1,exp:'The rule of V’s depends on the orientation and dip of the geological surface relative to the valley and topography. The pattern must be interpreted with the actual terrain and bedding attitude.'}
+];
+const letters=['A','B','C','D'];
+let current=0;
+let answers=Array(questions.length).fill(null);
+let saved=Array(questions.length).fill(false);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function score(){return answers.reduce((n,a,i)=>n+(a!==null&&a===questions[i].a?1:0),0)}
+function updateScore(){$('scoreText').textContent=`Score: ${score()} / ${questions.length}`}
+function renderSteps(){
+ $('steps').innerHTML=questions.map((q,i)=>{
+  let cls='step'+(answers[i]!==null?(answers[i]===q.a?' correct':' wrong'):'')+(i===current?' active':'');
+  return `<button type="button" class="${cls}" data-step="${i}" aria-label="Go to question ${i+1}" aria-current="${i===current?'step':'false'}">${i+1}</button>`;
+ }).join('');
+ $('steps').querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{current=Number(b.dataset.step);renderStep()}));
+}
+function optionClass(i,chosen,q){
+ if(answers[current]===null)return 'opt-btn';
+ if(i===q.a)return 'opt-btn is-correct';
+ if(i===chosen)return 'opt-btn is-wrong';
+ return 'opt-btn is-muted';
+}
+function questionMarkup(q,index,interactive){
+ const chosen=answers[index];
+ return `<div class="q-meta">Question ${index+1} of ${questions.length} · ${esc(q.topic)}</div>
+ <h2 class="q-heading">${esc(q.q)}</h2>
+ <div class="options">${q.opts.map((o,i)=>{
+  let cls;
+  if(interactive) cls=optionClassFor(index,i);
+  else if(chosen===null) cls='opt-btn';
+  else cls=(i===q.a?'opt-btn is-correct':i===chosen?'opt-btn is-wrong':'opt-btn is-muted');
+  return `<button type="button" class="${cls}" data-answer="${i}" data-question="${index}" ${chosen!==null?'disabled':''}><span class="keycap">${letters[i]}</span><span>${esc(o)}</span></button>`;
+ }).join('')}</div>
+ ${chosen!==null?`<div class="explanation"><strong>Explanation: </strong>${esc(q.exp)}</div>`:''}`;
+}
+function optionClassFor(index,i){const q=questions[index],chosen=answers[index];if(chosen===null)return 'opt-btn';if(i===q.a)return 'opt-btn is-correct';if(i===chosen)return 'opt-btn is-wrong';return 'opt-btn is-muted'}
+function renderStep(){
+ renderSteps();
+ const q=questions[current];
+ $('questionArea').innerHTML=questionMarkup(q,current,true);
+ $('questionArea').querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{
+  const qi=Number(b.dataset.question),ai=Number(b.dataset.answer);
+  if(answers[qi]!==null)return;
+  answers[qi]=ai;updateScore();renderStep();
+ }));
+ $('saveBtn').classList.toggle('saved',saved[current]);
+ $('saveBtn').setAttribute('aria-pressed',String(saved[current]));
+ $('saveBtn').querySelector('span').textContent=saved[current]?'Saved':'Save';
+ $('prevBtn').disabled=current===0;
+ $('nextBtn').disabled=current===questions.length-1;
+ updateScore();
+}
+function renderAll(){
+ $('allList').innerHTML=questions.map((q,i)=>`<section class="question-card" data-card="${i}">${questionMarkup(q,i,false)}</section>`).join('');
+ $('allList').querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{
+  const qi=Number(b.dataset.question),ai=Number(b.dataset.answer);
+  if(answers[qi]!==null)return;
+  answers[qi]=ai;updateScore();renderAll();renderSteps();renderStepViewWithoutSwitch();
+ }));
+ const done=answers.filter(a=>a!==null).length;
+ $('resultBox').hidden=done!==questions.length;
+ $('resultBox').innerHTML=`<strong>Practice complete.</strong><br>Score: ${score()} / ${questions.length} (${Math.round(score()/questions.length*100)}%). Review the explanations above, then use Reset to try again.`;
+}
+function renderStepViewWithoutSwitch(){if(!$('allView').hidden)renderAll()}
+function setMode(mode){
+ const all=mode==='all';
+ $('stepView').hidden=all;$('allView').hidden=!all;
+ $('stepMode').classList.toggle('active',!all);$('allMode').classList.toggle('active',all);
+ if(all)renderAll();else renderStep();
+}
+$('stepMode').addEventListener('click',()=>setMode('step'));
+$('allMode').addEventListener('click',()=>setMode('all'));
+$('prevBtn').addEventListener('click',()=>{if(current>0){current--;renderStep()}});
+$('nextBtn').addEventListener('click',()=>{if(current<questions.length-1){current++;renderStep()}});
+$('saveBtn').addEventListener('click',()=>{saved[current]=!saved[current];renderStep()});
+$('resetBtn').addEventListener('click',()=>{
+ answers=Array(questions.length).fill(null);saved=Array(questions.length).fill(false);current=0;setMode('step');
+});
+renderStep();
+})();
+</script>
+</body>
+</html>
